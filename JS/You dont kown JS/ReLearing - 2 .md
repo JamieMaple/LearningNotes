@@ -747,7 +747,7 @@
 
    >   Should we detect a circular reference and just break the circular traversal (leaving the deep element not fully duplicated)? Should we error out completely? Something in between?
    >
-   >  Moreover, it's not really clear what "duplicating" a function would mean? 
+   >   Moreover, it's not really clear what "duplicating" a function would mean? 
 
    1. One subset solution is that objects which are JSON-safe (that is, can be serialized to a JSON string and then re-parsed to an object with the same structure and values) can easily be *duplicated* with:
 
@@ -885,31 +885,31 @@
 
 10. Immutability 不可变性
 
-   >  It's important to note that **all** of these approaches create **shallow **immutability. That is, they affect only the object and its direct property characteristics. If an object has a reference to another object (array, object, function, etc), the *contents* of that object are not affected, and remain mutable.
+  >  It's important to note that **all** of these approaches create **shallow **immutability. That is, they affect only the object and its direct property characteristics. If an object has a reference to another object (array, object, function, etc), the *contents* of that object are not affected, and remain mutable.
 
-   others:
+  others:
 
-   ```javascript
-   var myObject = {
-   	a: 2
-   };
+  ```javascript
+  var myObject = {
+  	a: 2
+  };
 
-   Object.preventExtensions( myObject );
+  Object.preventExtensions( myObject );
 
-   myObject.b = 3;
-   myObject.b; // undefined
-   // In non-strict mode, the creation of b fails silently. In strict mode, it throws a TypeError.
-   ```
+  myObject.b = 3;
+  myObject.b; // undefined
+  // In non-strict mode, the creation of b fails silently. In strict mode, it throws a TypeError.
+  ```
 
-   -  Object Constant		By combining `writable:false` and `configurable:false`
+  -  Object Constant		By combining `writable:false` and `configurable:false`
 
-   -  Prevent Extensions     call `Object.preventExtensions(..)`
+  -  Prevent Extensions     call `Object.preventExtensions(..)`
 
-   -  `Object.seal(..)` creates a "sealed" object, which means it takes an existing object and essentially calls `Object.preventExtensions(..)` on it, but also marks all its existing properties as `configurable:false`.
+  -  `Object.seal(..)` creates a "sealed" object, which means it takes an existing object and essentially calls `Object.preventExtensions(..)` on it, but also marks all its existing properties as `configurable:false`.
 
-      So, not only can you not add any more properties, but you also cannot reconfigure or delete any existing properties (thoughyou can still **modify their values)**.
+     So, not only can you not add any more properties, but you also cannot reconfigure or delete any existing properties (thoughyou can still **modify their values)**.
 
-   -  `Object.freeze(..)` creates a frozen object, which means it takes an existing object and essentially calls `Object.seal(..)` on it, but it also marks all "data accessor" properties as `writable:false`, so that their values cannot be changed.
+  -  `Object.freeze(..)` creates a frozen object, which means it takes an existing object and essentially calls `Object.seal(..)` on it, but it also marks all "data accessor" properties as `writable:false`, so that their values cannot be changed.
 
 11. [[Get]]
 
@@ -1045,4 +1045,105 @@
 
     That's because "enumerable" basically means "will be included if the object's properties are iterated through".
 
-    ​
+    >  **Note:** `for..in` loops applied to arrays can give somewhat unexpected results, in that the enumeration of an array will include not only all the numeric indices, but also any enumerable properties. It's a good idea to use `for..in`loops *only* on objects, and traditional `for` loops with numeric index iteration for the values stored in arrays.
+
+    1. `propertyIsEnumerable(..)`测试一个给定的属性名是否直 *接存* 在于对象上，并且是`enumerable:true`。栗子: `myObject.propertyIsEnumerable( "a" );`
+    2. `Object.keys(..)` returns an array of all enumerable properties, whereas `Object.getOwnPropertyNames(..)` returns an array of *all* properties, enumerable or not.
+    3. Whereas `in` vs. `hasOwnProperty(..)` differ in whether they consult the `[[Prototype]]` chain or not, `Object.keys(..)` and `Object.getOwnPropertyNames(..)` both inspect *only* the direct object specified.
+    4. （当下）没有与`in`操作符的查询方式（在整个`[[Prototype]]`链上遍历所有的属性，如我们在第五章解释的）等价的，内建的方法可以得到一个 **所有属性** 的列表。你可以近似地模拟一个这样的工具：递归地遍历一个对象的`[[Prototype]]`链，在每一层都从`Object.keys(..)`中取得一个列表——仅包含可枚举属性。
+
+16. Iteration 迭代
+
+    -  Array: `for loop` / `forEach()` / `every()` / `some()`
+
+       后面3个是ES5加入的。这些帮助方法的每一个都接收一个回调函数，这个函数将施用于数组中的每一个元素，仅在如何响应回调的返回值上有所不同。
+
+    -  `forEach(..)` will iterate over all values in the array, and ignores any callback return values.
+
+        `every(..)` keeps going until the end *or* the callback returns a `false` (or "falsy") value, 
+
+       whereas `some(..)` keeps going until the end *or* the callback returns a `true` (or "truthy") value.
+
+    -  与以有序数字的方式（`for`循环或其他迭代器）迭代数组的下标比较起来，迭代对象属性的顺序是 **不确定** 的
+
+    -  `for…of` 用来迭代数组**（和对象，如果这个对象有定义的迭代器）**。虽然数组可以在`for..of`循环中自动迭代，但普通的对象 **没有内建的@@iterator**。
+
+    -  手工迭代器 manually iterate
+
+       ```javascript
+       var myArray = [ 1, 2, 3 ];
+       var it = myArray[Symbol.iterator]();
+
+       it.next(); // { value:1, done:false }
+       it.next(); // { value:2, done:false }
+       it.next(); // { value:3, done:false }
+       it.next(); // { done:true }
+       ```
+
+       **注意：** 我们使用一个ES6的`Symbol`：`Symbol.iterator`来取得一个对象的`@@iterator` *内部属性*。（见“计算型属性名”），同样的原理适用这里。你总是希望通过`Symbol`名称引用，而不是它可能持有的特殊的值，来引用这样特殊的属性。同时，与这个名称的含义无关，`@@iterator`本身 **不是迭代器对象**， 而是一个返回迭代器对象的 **方法** ——一个重要的细节！
+
+       It *is* possible to define your own default `@@iterator` for any object that you care to iterate over. For example:
+
+       ```javascript
+       var myObject = {
+       	a: 2,
+       	b: 3
+       };
+
+       Object.defineProperty( myObject, Symbol.iterator, {
+       	enumerable: false,
+       	writable: false,
+       	configurable: true,
+       	value: function() {
+       		var o = this;
+       		var idx = 0;
+       		var ks = Object.keys( o );
+       		return {
+       			next: function() {
+       				return {
+       					value: o[ks[idx++]],
+       					done: (idx > ks.length)
+       				};
+       			}
+       		};
+       	}
+       } );
+
+       // iterate `myObject` manually
+       var it = myObject[Symbol.iterator]();
+       it.next(); // { value:2, done:false }
+       it.next(); // { value:3, done:false }
+       it.next(); // { value:undefined, done:true }
+
+       // iterate `myObject` with `for..of`
+       for (var v of myObject) {
+       	console.log( v );
+       }
+       // 2
+       // 3
+       ```
+
+### Review
+
+1. Objects in JS have both a literal form  and a constructed form. 
+
+   The literal form is almost always preferred, but the constructed form offers, in some cases, more creation options.
+
+2. Many people mistakenly claim "everything in JavaScript is an object", but this is incorrect.
+
+   Objects are one of the 6 (or 7, depending on your perspective) primitive types.Objects have sub-types, including `function`
+
+3. Objects are collections of key/value pairs. The values can be accessed as properties, via `.propName` or `["propName"]` syntax. 不管属性什么时候被访问，引擎实际上会调用内部默认的`[[Get]]`操作([[Get]] & [[Put]])
+
+4. Properties have certain characteristics that can be controlled through property descriptors, such as `writable` and `configurable`.  
+
+   objects can have their mutability: `Object.preventExtensions(..)`,
+
+    `Object.seal(..)`, and `Object.freeze(..)`.
+
+5. Properties don't have to contain values -- they can be "accessor properties" as well, with getters/setters. 
+
+   They can also be either *enumerable* or not, which controls if they show up in `for..in` loop iterations, for instance.
+
+6. You can also iterate over **the values** in data structures (arrays, objects, etc) using the ES6 `for..of` syntax, which looks for either a built-in or custom `@@iterator` object consisting of a `next()` method to advance through the data values one at a time.
+
