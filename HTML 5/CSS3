@@ -1,0 +1,439 @@
+补充知识
+	perspactive
+	cursor 属性
+	选择器权重
+		权重主要分为 4 个等级：
+			第一等：代表内联样式，如: style=""，权值为1000
+			第二等：代表ID选择器，如：#content，权值为100
+			第三等：代表类，伪类和属性选择器，如.content，权值为10
+			第四等：代表类型选择器和伪元素选择器，如div p，权值为1
+CSS3
+1.强大功能
+	(1)强大的选择器
+		.important.!   一般不直接写类或者ID而是由外到内进行缩进   比如 .slider li:nth-of-type(n) a
+		PS:X > Y       X Y和X > Y之间的不同点是后者只选择直接子代
+		     *         能作为子选择符使用
+			X Y        后代选择符
+		   X + Y       相邻选择符，它将只选择紧贴在X元素之后Y元素
+		   X ~ Y       兄弟选择符,它会选择更在x后面的任何y元素
+		   X[title]    属性选择器
+		   X[href=””]  a锚标签添加样式
+		.first
+			A.新增3个属性选择器
+				选择匹配元素：E
+					E[att^] = "val"  -----  以val开头的att属性的任何字符串
+					E[att$] = "val"  ----- 	以val结尾的att属性的任何字符串
+					E[att*] = "val"  -----  (任何位置)包含val的att属性的字符串
+			B.:root选择器---根选择器
+				用途.匹配元素E所在文档的根元素
+				在HTML文档中，根元素始终是<html>
+			C.:not选择器称为否定选择器
+				用途.可以选择除某个元素之外的所有元素
+				例如.input:not([type="submit"]){
+					  border:1px solid red;
+					}
+					可以结合起来写
+						.bg:not(:target)
+			D.:empty
+				用途.选择器表示的就是空,一点空格不算空
+				例如.<p></p>
+					css: p:empty
+			E.:target
+				用途.目标选择器，用来匹配文档(页面)的url的某个标志符的目标元素
+				例子.
+					<h2><a href="#brand">Brand</a></h2>
+					<div class="menuSection" id="brand">
+					    content for Brand
+					</div>
+					CSS:
+					.menuSection{
+					  display: none;
+					}
+					:target{/*这里的:target就是指id="brand"的div对象*/
+					  display:block;
+					}
+			F.:first-child
+				用途.选择父元素的第一个子元素的元素E
+				记住是子元素，而不是后代元素。
+			G.:last-child
+				用途.选择父元素的最后一个子元素的元素E
+			H.:nth-child(n)  结构性伪类选择器
+				用途.用来定位某个父元素的一个或多个特定的子元素
+				其中“n”是其参数，而且可以是整数值(1,2,3,4)，
+				也可以是表达式(2n+1、-n+5)和关键词(odd、even)，
+				但参数n的起始值始终是1，而不是0。
+				也就是说，参数n的值为0时，选择器将选择不到任何匹配的元素。
+			I.:nth-last-child(n) 
+				用途.从某父元素的最后一个子元素开始计算，来选择特定的元素
+			J.:first-of-type
+				用途.其主要用来定位一个父元素下的某个类型的第一个子元素
+			K.:nth-of-type(n)
+				用途.不同的是它只计算父元素中指定的某种类型的子元素
+				“n”参数也一样，可以是具体的整数，也可以是表达式，还可以是关键词
+			L.:last-of-type
+				用途.选择父元素下的某个类型的最后一个子元素
+			M.:nth-last-of-type(n)
+				用途.从最后一个子元素开始,选择父元素中指定的某种子元素类型
+			N.:only-child选择器
+				用途.通过“:only-child”选择器，来控制仅有一个子元素的背景样式
+			O.:only-of-type
+				用途.选择器用来选择一个元素是它的父元素的唯一一个相同类型的子元素
+		.second
+			A.:enabled选择器
+				用途.用来选择可用表单元素
+			B.:disabled选择器
+				用途.用来选择不可用表单元素
+			C.:checked选择器
+				用途.表示的是选中状态
+			D.::selection
+				用途.伪元素是用来匹配突出显示的文本，鼠标选中
+			E.:read-only
+				用途.用来指定处于只读状态元素的样式
+			F.:read-write
+				用途.与“:read-only”选择器相反，主要用来指定当元素处于非只读状态时的样式
+			G.::before和::after
+				用途.它创建了一个虚假的元素，并插入到目标元素内容之前或之后
+				伪元素如果没有设置“content”属性，伪元素是无用的
+	(2)圆角效果		border-radius:顺时针自左上开始
+		实心上半圆：
+			方法：把高度(height)设为宽度（width）的一半，并且只设置左上角和右上角的半径与元素的高度一致（大于也是可以的）。
+			div{
+			    height:50px;/*是width的一半*/
+			    width:100px;
+			    background:#9da;
+			    border-radius:50px 50px 0 0;/*半径至少设置为height的值*/
+			    }
+		实心圆：
+			方法：把宽度（width）与高度(height)值设置为一致（也就是正方形），并且四个圆角值都设置为它们值的一半。如下代码：
+			div{
+			    height:100px;/*与width设置一致*/
+			    width:100px;
+			    background:#9da;
+			    border-radius:50px;/*四个圆角值都设置为宽度或高度值的一半*/
+			    }
+	(3)块阴影与文字阴影
+		A.box-shadow X轴偏移量(needed) Y轴偏移量(needed) [阴影模糊半径](模糊距离) [阴影扩展半径](阴影大小) [阴影颜色](black) [投影方式](default:out, inner:inset)(first or last);
+		如果添加多个阴影，只需用逗号隔开即可
+			例如：box-shadow:4px 2px 6px #f00, -4px -2px 6px #000, 0px 0px 12px 5px #33CC00 inset;
+		B.tips
+			a、阴影模糊半径与阴影扩展半径的区别
+				阴影模糊半径：此参数可选，其值只能是为正值，如果其值为0时，表示阴影不具有模糊效果，其值越大阴影的边缘就越模糊；
+				阴影扩展半径：此参数可选，其值可以是正负值，如果值为正，则整个阴影都延展扩大，反之值为负值时，则缩小；
+			
+			b、X轴偏移量和Y轴偏移量值可以设置为负数
+				box-shadow: X轴偏移量 Y轴偏移量 [阴影模糊半径] [阴影扩展半径] [阴影颜色] [投影方式];
+	(4)色彩
+		A.RGBA		color：rgba(R,G,B,A)
+			以上R、G、B三个参数，正整数值的取值范围为：0 - 255。
+			百分数值的取值范围为：0.0% - 100.0%。
+			超出范围的数值将被截至其最接近的取值极限.
+			A为透明度参数，取值在0~1之间，不可为负值。
+	(5)渐变效果
+		A.线性渐变(linear)
+			background-image:linear-gradient:(渐变方向，颜色开始，颜色结束)	
+			方向：“角度”的关键词或“英文”---对称关系
+				  0deg---to top------ bottom to top 
+				 90deg---to right---- left   to right
+				180deg---to bottom--- top    to bottom
+				270deg---to left----- right  to left
+						 to top left, to top right
+				第一个参数省略时，默认为“180deg”，等同于“to bottom”。
+				第二个和第三个参数，表示颜色的起始点和结束点，可以有多个颜色值。
+		B.径向渐变(radial)
+	(6)个性字体
+		A.text-overflow 
+			用途.text-overflow用来设置是否使用一个省略标记（...）标示对象内文本的溢出
+			text-overflow:clip(cut)|ellipsis(省略标记)
+			a/但是text-overflow只是用来说明文字溢出时用什么方式显示，
+			要实现溢出时产生省略号的效果，
+			b/还须定义强制文本在一行内显示（white-space:nowrap）
+			c/及溢出内容为隐藏（overflow:hidden），
+			只有这样才能实现溢出文本显示省略号的效果，代码如下：
+			text-overflow:ellipsis; 
+			overflow:hidden; 
+			white-space:nowrap; 
+		B.word-wrap
+			用途.word-wrap也可以用来设置文本行为，当前行超过指定容器的边界时是否断开转行
+			word-wrap:normal(default)|break-word(边界换行)
+		C.嵌入字体@font-face
+			用途.能够加载服务器端的字体文件，让浏览器端可以显示用户电脑里没有安装的字体
+			语法：@font-face{
+				font-family: 字体名称,
+				src:url(位置);
+			}
+		D.文本阴影text-shadow
+			用途.用来设置文本的阴影效果
+			语法.text-shadow: X-Offset Y-Offset blur(阴影模糊程度px) color(阴影颜色);
+	(7)多背景图
+		A.background-origin
+			用途.设置元素背景图片的原始起始位置
+			语法.background-origin ： border-box | padding-box | content-box;
+				参数分别表示背景图片是从边框，还是内边距（默认值），或者是内容区域开始显示。
+				需要注意的是，如果背景不是no-repeat，这个属性无效，它会从边框开始显示。
+		B.background-clip
+			用途.用来将背景图片做适当的裁剪以适应实际需要
+			语法.background-clip ： border-box | padding-box | content-box | no-clip
+		C.background-size
+			用途.设置背景图片的大小，以长度值或百分比显示，还可以通过cover和contain来对图片进行伸缩。
+			语法.background-size: auto | <长度值> | <百分比> | cover | contain
+			1、auto：默认值，不改变背景图片的原始高度和宽度；
+			2、<长度值>：成对出现如200px 50px，将背景图片宽高依次设置为前面两个值，当设置一个值时，将其作为图片宽度值来等比缩放；
+			3、<百分比>：0％~100％之间的任何值，将背景图片宽高依次设置为所在元素宽高乘以前面百分比得出的数值，当设置一个值时同上；
+			4、cover：顾名思义为覆盖，即将背景图片等比缩放以填满整个容器；
+			5、contain：容纳，即将背景图片等比缩放至某一边紧贴容器边缘为止。
+		D.multiple backgrounds
+			用途.也就是CSS2里background的属性外加origin、clip和size组成的新background的多次叠加，
+				缩写时为用逗号隔开的每组值；
+			PS.用分解写法时，
+				如果有多个背景图片，而其他属性只有一个（例如background-repeat只有一个），
+				表明所有背景图片应用该属性值。
+			语法:
+			a.
+			background ： [background-color] 
+					| [background-image] 
+					| [background-position][/background-size] 
+					| [background-repeat] 
+					| [background-attachment] 
+					| [background-clip] 
+					| [background-origin],...
+				tips:
+				用逗号隔开每组 background 的缩写值；
+				如果有 size 值，需要紧跟 position 并且用 "/" 隔开；
+				如果有多个背景图片，而其他属性只有一个（例如 background-repeat 只有一个），表明所有背景图片应用该属性值。
+				background-color 只能设置一个。
+			b.
+				background-repeat : repeat1,repeat2,...,repeatN;
+				backround-position : position1,position2,...,positionN;
+				background-size : size1,size2,...,sizeN;
+				background-attachment : attachment1,attachment2,...,attachmentN;
+				background-clip : clip1,clip2,...,clipN;
+				background-origin : origin1,origin2,...,originN;
+				background-color : color;
+	(8)边框背景图
+		A.border-image:url(xxx.png) 10 20 30 40 parameter; (number:10...->顺时针(left-top,widthd,no px)，parameter->three:round\repeat\stretch)
+	(9)变形处理与动画
+		I.变形transform  形变动画
+			A.旋转 rotate()
+				用途.通过指定的角度参数使元素相对原点进行旋转
+					设置一个角度值，用来指定旋转的幅度。
+					如果这个值为正值，元素相对原点中心顺时针旋转；
+					如果这个值为负值，元素相对原点中心逆时针旋转
+				例如.transform:rotate(20deg);
+			B.扭曲 skew()
+				用途.让元素倾斜显示,将一个对象以其中心位置围绕着X轴和Y轴按照一定的角度倾斜
+					skew()函数不会旋转，而只会改变元素的形状。
+				参数.第一个参数对应X轴，第二个参数对应Y轴。
+					如果第二个参数未提供，则值为0，也就是Y轴方向上无斜切
+				其他.skewX(x)仅使元素在水平方向扭曲变形, 
+					skewY(y)仅使元素在垂直方向扭曲变形
+				例如.transform:skew(45deg);
+			E.缩放 scale()
+				用途.让元素根据中心原点对对象进行缩放
+				三情况.
+					scale(X,Y)使元素水平方向和垂直方向同时缩放,
+						tips.Y是一个可选参数，如果没有设置Y值，则表示X，Y两个方向的缩放倍数是一样的。
+					scaleX(x)元素仅水平方向缩放（X轴缩放）
+					scaleY(y)元素仅垂直方向缩放（Y轴缩放）
+				例如.transform:scale(.9)
+			F.位移 translate()
+				用途.translate()函数可以将元素向指定的方向移动
+				三情况.
+					translate(x,y)水平方向和垂直方向同时移动（也就是X轴和Y轴同时移动）
+					translateX(x)仅水平方向移动（X轴移动）
+					translateY(Y)仅垂直方向移动（Y轴移动）
+				translate的百分比是根据自身的宽度和高度来定的
+				例如.transform:translate(50%,50%);
+			G.矩阵 matrix()
+				用途.matrix() 是一个含六个值的(a,b,c,d,e,f)变换矩阵，
+				用来指定一个2D变换，相当于直接应用一个[a b c d e f]变换矩阵
+				是基于水平方向（X轴）和垂直方向（Y轴）重新定位元素
+				例如.transform:matrix(1,0,0,1,100,100)
+			H.原点 transform-origin
+				用途.任何一个元素都有一个中心点，默认情况之下，其中心点是居于元素X轴和Y轴的50%处
+				在没有重置transform-origin改变元素原点位置的情况下，
+
+				CSS变形进行的旋转、位移、缩放，扭曲等操作都是以元素自己中心位置进行变形.
+				但很多时候，我们可以通过transform-origin来对元素进行原点位置改变，
+				使元素原点不在元素的中心位置，以达到需要的原点位置。
+				语法.transform-origin取值和元素设置背景中的background-position取值
+				参数.百分比或者坐标单词	
+				例如:transform-origin:right top;	
+			I.过渡属性 transition-property  缓动动画
+				用途.通过一些简单的CSS事件来触发元素的外观变化，让效果显得更加细腻
+					通过鼠标的单击、获得焦点，被点击或对元素任何改变中触发，
+					并平滑地以动画效果改变CSS的属性值
+				步骤.
+					第一，在默认样式中声明元素的初始状态样式；
+					第二，声明过渡元素最终状态样式，比如悬浮状态；
+					第三，在默认样式中通过添加过渡函数，添加一些不同的样式。
+				包含的子属性:
+					transition-property:指定过渡或动态模拟的CSS属性;
+						注意.transition-property用来指定过渡动画的CSS属性名称，
+						而这个过渡属性只有具备一个中点值的属性（需要产生动画的属性）才能具备过渡效果
+						例如. transition: background-color .5s ease .1s;
+							div:hover改变属性
+					transition-duration:指定完成过渡所需的时间;
+						用途.属性主要用来设置一个属性过渡到另一个属性所需的时间,俗称持续时间
+					transition-timing-function:指定过渡函数;
+						用途.指定浏览器的过渡速度，以及过渡期间的操作进展情况
+						函数包含:
+							ease        由快到慢
+							linear      匀速
+							ease-in     加速，渐显
+							ease-out    减速，渐隐
+							ease-in-out 加速后减速，渐显渐隐
+					transition-delay:指定开始出现的延迟时间
+						用途.主要用来指定一个动画开始执行的时间，也就是说当改变元素属性值后多长时间开始执行
+
+				a{ transition: background 0.8s ease-in 0.3,color 0.6s ease-out 0.3;}
+				多个transition改变,第一个时间的值为 transition-duration，第二个为transition-delay
+		II.动画  
+			逐帧动画
+			A.关键帧   Keyframes 
+				用途.主要以“@keyframes”开头，后面紧跟着是动画名称加上一对花括号“{…}”
+					还可以使用关键词from和to来代表，其中0%对应的是from，100%对应的是to
+				例如.@keyframes changecolor{...}
+			B.调用动画 
+				a.animation-name
+					用途.主要是用来调用 @keyframes 定义好的动画
+					注意: animation-name 调用的动画名需要和“@keyframes”定义的动画名称完全一致
+					语法.animation-name: none | IDENT[,none|DENT]*;
+				b.animation-duration
+					用途.主要用来设置CSS3动画播放时间
+					语法.animation-duration: <time>[,<time>]*
+				c.animation-timing-function
+					用途.主要用来设置动画播放方式
+					语法.animation-timing-function:ease,ease-in,ease-in-out,ease-out,linear和cubic-bezier
+					ease | linear | ease-in | ease-out | ease-in-out | 
+					cubic-bezier(<number>, <number>, <number>, <number>) '
+					[, ease | linear | ease-in | ease-out | ease-in-out | cubic-bezier(<number>, <number>, <number>, <number>)]*
+				d.animation-delay
+					用途.用来触发动画播放的时间点
+					语法.animation-delay:<time>[,<time>]*
+				e.animation-iteration-count
+					用途.用来定义动画的播放次数
+					语法.animation-iteration-count: infinite | <number> [, infinite | <number>]*
+				f.animation-direction
+					用途.用来设置动画播放方向
+					语法.animation-direction:normal | alternate [, normal | alternate]*
+					normal是默认值，如果设置为normal时，动画的每次循环都是向前
+					另一个值是alternate，动画播放在第偶数次向前播放，第奇数次向反方向播放
+				g.animation-play-state
+					用途.用来控制元素动画的播放状态
+					语法.animation-play-state:paused;
+				h.animation-fill-mode
+					用途.动画开始之前和结束之后发生的操作
+					语法.animation-fill-mode:none、forwards、backwords和both;
+					几个重要属性.
+						none		默认值，表示动画将按预期进行和结束，在动画完成其最后一帧时，动画会反转到初始帧处
+						forwards	表示动画在结束后继续应用最后的关键帧的位置
+						backwards	会在向元素应用动画样式时迅速应用动画的初始帧
+						both 		元素动画同时具有forwards和backwards效果
+	(10)布局
+		I.多栏目（列）布局——Columns
+			用途.在Web页面中方便实现类似报纸、杂志那种多列排版的布局
+			语法.columns：<column-width> || <column-count>		即宽度和列数
+			例如.columns: 200px 2;
+				a.多列布局——column-width宽度
+					既可以单独使用，也可以和多列属性中其他属性配合使用	column-width: auto | <length>
+				b.多列布局——column-count列数
+					指定想要的列数和允许的最大列数					column-count：auto | <integer>
+				c.列间距column-gap	
+					主要用来设置列与列之间的间距						column-gap: normal || <length>
+				d.列表边框column-rule
+					用来定义列与列之间的边框宽度、边框样式和边框颜色,
+					类似于border									column-rule: 2px dotted green;
+				e.跨列设置column-span
+					用来定义一个分列元素中的子元素能跨列多少			column-span: none | all
+					all.跟none值刚好相反，表示的是元素跨越所有列，并定位在列的Ｚ轴之上。
+		II.CSS3盒子模型
+			PS.在CSS中盒模型被分为两种，第一种是w3c的标准模型，另一种是IE的传统模型.
+				外盒模型和内盒模型:
+					a.W3C
+						外盒尺寸计算（元素空间尺寸）
+							element空间高度/宽度＝内容高度/宽度＋内距＋边框＋外距
+						内盒尺寸计算（元素大小）
+							element高度/宽度＝内容高度＋内距＋边框（height为内容高度，width为内容宽度）
+					b.IE传统下盒模型(IE6以下)
+						element空间高度/宽度＝内容高度/宽度＋外距（height/width包含了元素内容高度/宽度、边框、内距）
+			box-sizing属性
+				用途.能够事先定义盒模型的尺寸解析方式
+				语法.box-sizing: content-box(其让元素维持W3C的标准盒模型) | 
+								border-box (让元素维持IE传统的盒模型)| 
+								inherit    (元素继承父元素)
+		III.伸缩布局Flexbox布局
+			http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html
+			用途.用来提供一个更加有效的方式制定、调整和分布一个容器里项目布局，即使它们的大小是未知或者动态的
+				第一，屏幕和浏览器窗口大小发生改变也可以灵活调整布局；
+				第二，可以指定伸缩项目沿着主轴或侧轴按比例分配额外空间（伸缩容器额外空间），从而调整伸缩项目的大小；
+				第三，可以指定伸缩项目沿着主轴或侧轴将伸缩容器额外空间，分配到伸缩项目之前、之后或之间；
+				第四，可以指定如何将垂直于元素布局轴的额外空间分布到该元素的周围；
+				第五，可以控制元素在页面上的布局方向；
+				第六，可以按照不同于文档对象模型（DOM）所指定排序方式对屏幕上的元素重新排序。
+					也就是说可以在浏览器渲染中不按照文档流先后顺序重排伸缩项目顺序。
+			语法.display: flex;display:-webkit-flex;
+			Flex项目是Flex容器的子元素
+				flex项目改变主轴方向:flex-direction: column | row;
+				flex项目移动到顶部 : (垂直方向/水平方向) align-items/justify-content:(flex-start)(flex-end)(center);
+				flex项目实现自动伸缩:-webkit-flex:200; flex:200;(设置flex属性设置需要伸缩的值)
+	(11)媒体查询---类似响应式所用到的某种功能
+		用途.通过CSS3来查询媒体,然后调用对应的样式,让一个页面适应不同的终端,从而让你的页面让用户有一个更好的体验
+		I. 媒体类型(MediaType)
+			W3C列出了10种, Screen、All和Print为最常见的三种媒体类型(默认为all)
+			媒体类型的引用方法:(link标签、@import和CSS3新增的@media几种)
+			a.link方法(通过link标签中的media属性来指定不同的媒体类型)
+				栗子.<link rel="stylesheet" type="text/css" href="print.css" media="print" />
+			b.@import方法(可以引用样式文件，同样也可以用来引用媒体类型)
+				两种方式:
+					①通过@import调用另一个样式文件(@importurl(print.css) print;)
+					(IE6~7都不被支持)②在<head></head>标签中的<style></style>中引入(<style type="text/css">@importurl(style.css) all;</style>)
+			c.@media方法(媒体查询)
+				@media screen {选择器{/*你的样式代码写在这里…*/}}
+				Media Queries使用方法:
+				PS.13种媒体特性,媒体特性是通过min/max来表示大于等于或小于做为逻辑判断
+					@media 媒体类型 and (媒体特性){你的样式}			栗子
+					a.最大宽度max-width(<=指定的宽度)				@media screen and (max-width:480px){}
+					b.最小宽度min-width(>=指定的宽度)				@media screen and (min-width:900px){}					
+					c.多个媒体特性使用(使用关键词"and"结合在一起)		@media screen and (min-width:600px) and (max-width:900px){}
+					d.设备屏幕的输出宽度Device Width()				<link rel="stylesheet" media="screen and (max-device-width:480px)" href="iphone.css" />
+						可以使用“min/max”对应参数，如“min-device-width”或者“max-device-width”
+					e.not关键词(关键词“not”是用来排除指定的媒体类型)	@media not print and (max-width: 1200px){}
+					f.only关键词(可以用来排除不支持媒体查询的浏览器)	<linkrel="stylesheet" media="only screen and (max-device-width:240px)" href="android240.css" />
+					其实only很多时候是用来对那些不支持Media Query但却支持Media Type的设备隐藏样式表的
+				.注意:Media Queries在其他浏览器中不要像其他CSS3属性一样在不同的浏览器中添加前缀
+		II.媒体特性
+			13种媒体特性
+		III.响应式布局(Responsive设计,全称ResponsiveWebDesign)
+			RWD不是流体布局，也不是网格布局，而是一种独特的网页设计方法
+			.流体网格
+			.弹性图片
+			.媒体查询
+			.断点
+
+			第一， 尽量少用无关紧要的div；					第一，使用HTML5 Doctype和相关指南；
+			第二，不要使用内联元素（inline）；				第二，重置好你的样式（reset.css）；
+			第三，尽量少用JS或flash；						第三，一个简单的有语义的核心布局；
+			第四，丢弃没用的绝对定位和浮动样式；				第四，给重要的网页元素使用简单的技巧，比如导航菜单之类元素。
+			第五，摒弃任何冗余结构和不使用100%设置
+			.meta <meta name=”viewport” content=”” />
+				<meta name=”viewport” content=”width=device-width,initial-scale=1.0” />
+				使用设备的宽度为视图的宽度，也就是说禁止其默认的自适应页面的效果
+			分辨率设置
+	(12)CSS 伪元素用于向某些选择器设置特殊效果。
+		:before,:after等等
+		I.CSS生成内容
+			用途.在Web中插入内容
+			实现.“:after”和CSS3的伪元素“::before”、“::after”来实现，
+				其关键是依靠CSS3中的“content”属性来实现。
+				PS.不过这个属性对于img和input元素不起作用
+			功能.none\attr(插入标签属性值)\url(插入一个外部资源)\string(插入字符串)
+	(13)用户界面和其他属性
+		I.自由缩放属性resize
+			用途.它允许用户通过拖动的方式来修改元素的尺寸来改变元素的大小
+			语法.resize: none | both(w h) | horizontal (w)| vertical (h)| inherit
+		II.外轮廓属性outline
+			区别.与border相似，但不同.外轮廓线不占用网页布局空间，不一定是矩形
+			外轮廓是属于一种动态样式,只有元素获取到焦点或者被激活时呈现。
+			语法.outline: ［outline-color］ || [outline-style] || [outline-width] || [outline-offset] || inherit
+			不同于border，增加了一个outline-offset
+				正值表示向外偏离多少个像素；负值表示向内偏移多少个像素。
