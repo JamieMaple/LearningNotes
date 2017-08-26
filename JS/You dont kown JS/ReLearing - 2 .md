@@ -1,6 +1,6 @@
 # ReLearing - 2
 
-### 4.this & Object Prototypes
+### this & Object Prototypes
 
 -  **two misconceptions**
 
@@ -1146,4 +1146,5 @@
    They can also be either *enumerable* or not, which controls if they show up in `for..in` loop iterations, for instance.
 
 6. You can also iterate over **the values** in data structures (arrays, objects, etc) using the ES6 `for..of` syntax, which looks for either a built-in or custom `@@iterator` object consisting of a `next()` method to advance through the data values one at a time.
+
 
