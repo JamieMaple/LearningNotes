@@ -271,4 +271,198 @@ OO或者面向类的编程强调数据和操作它的行为之间有固有的联
 
       如果你需要在方法间进行委托，**方法** 的遮蔽会导致难看的 *显式假想多态*（见第四章）。一般来说，遮蔽与它带来的好处相比太过复杂和微妙了，**所以你应当尽量避免它**。
 
+      ```javascript
+      var anotherObject = {
+      	a: 2
+      };
+
+      var myObject = Object.create( anotherObject );
+
+      anotherObject.a; // 2
+      myObject.a; // 2
+
+      anotherObject.hasOwnProperty( "a" ); // true
+      myObject.hasOwnProperty( "a" ); // false
+
+      myObject.a++; // 噢，隐式遮蔽！
+
+      anotherObject.a; // 2
+      myObject.a; // 3
+
+      myObject.hasOwnProperty( "a" ); // true
+      ```
+
+      虽然看起来`myObject.a++`应当（通过委托）查询并 *原地* 递增`anotherObject.a`属性，但是`++`操作符相当于`myObject.a = myObject.a + 1`。结果就是在`[[Prototype]]`上进行`a`的`[[Get]]`查询，从`anotherObject.a`得到当前的值`2`，将这个值递增1，然后将值`3`用`[[Put]]`赋值到`myObject`上的新遮蔽属性`a`上
+
+4. JavaScript "Class"
+
+   在JavaScript中，对于对象来说没有抽象模式/蓝图，即没有面向类的语言中那样的称为类的东西。JavaScript **只有** 对象。
+
+   -  '类' 函数
+
+      “某种程度的类”这种奇特的行为取决于函数的一个奇怪的性质：所有的函数默认都会得到一个公有的，不可枚举的属性，称为`prototype`，它可以指向任意的对象
+
+      ```javascript
+      function Foo() {
+      	// ...
+      }
+
+      Foo.prototype; // { }
+      // “以前被认为是Foo的原型的对象”
+      // 一个被随意标记为‘Foo点儿原型’的对象
+      ```
+
+      1. 每个由调用`new Foo()`（见第二章）而创建的对象将最终（有些随意地）被`[[Prototype]]`链接到这个“Foo点儿原型”对象
+
+      2. 在JavaScript中，没有这样的拷贝处理发生。你不会创建类的多个实例。你可以创建多个对象，它们的`[[Prototype]]`连接至一个共通对象。
+
+         但默认地，没有拷贝发生，如此这些对象彼此间最终不会完全分离和切断关系，而是 **链接在一起**
+
+      3. **结果我们得到两个对象，彼此链接**
+
+         事实上，这个使大多数JS开发者无法理解的秘密，是因为`new Foo()`函数调用实际上几乎和建立链接的处理没有任何 *直接*关系。**它是某种偶然的副作用。**`new Foo()`是一个间接的，迂回的方法来得到我们想要的：**一个被链接到另一个对象的对象。**
+
+      4. 更直接得到的方法 Object.create(..)
+
+      在JavaScript中，我们不从一个对象（“类”）向另一个对象（“实例”） *拷贝*。我们在对象之间制造 *链接*。这种机制常被称为“原型继承（prototypal inheritance）”。
+
+      “继承”意味着 *拷贝* 操作，而JavaScript不拷贝对象属性（原生上，默认地）。相反，JS在两个对象间建立链接，一个对象实质上可以将对属性/函数的访问 *委托* 到另一个对象上。对于描述JavaScript对象链接机制来说，“委托”是一个准确得多的术语。
+
+      还有个偶尔会用到的 JavaScript 术语 差异继承 。基本原则是在描述对象行为时，使用其不同于 普遍描述的特质。举例来说，描述汽车时你会说汽车是有四个轮子的一种交通工具， 但是你不会重复描述交通工具具备的通用特性（比如引擎）。
+
+      默认情况下，对象并不会像差异继承暗示的那样通过复制生成。因此，差异继承也不适合 用来描述 JavaScript 的 [[Prototype]] 机制。
+
+   -  "构造器"（Constructors）
+
+      ```javascript
+      function Foo() {
+      	// ...
+      }
+
+      Foo.prototype.constructor === Foo; // true
+
+      var a = new Foo();
+      a.constructor === Foo; // true
+      ```
+
+      这实际上不是真的。`a`上没有`.constructor`属性，而`a.constructor`确实解析成了`Foo`函数，“constructor”并不像它看起来的那样实际意味着“被XX创建”。
+
+      函数自身**不是**构造器。但是，当你在普通函数调用前面放一个`new`关键字时，这就将函数调用变成了“构造器调用”。事实上，`new`在某种意义上劫持了普通函数并将它以另一种方式调用：构建一个对象，**外加这个函数要做的其他任何事**。
+
+      ```javascript
+      function NothingSpecial() {
+      	console.log( "Don't mind me!" );
+      }
+
+      var a = new NothingSpecial();
+      // "Don't mind me!"
+
+      a; // {}
+      ```
+
+      `NothingSpecial`仅仅是一个普通的函数，但当用`new`调用时，几乎是一种副作用，它会 *构建* 一个对象，并被我们赋值到`a`。这个 **调用** 是一个 *构造器调用*，但是`NothingSpecial`本身并不是一个 *构造器*。
+
+      换句话说，在JavaScript中，更合适的说法是，“构造器”是在前面 **用new关键字调用的任何函数**。函数不是构造器，但是当且仅当`new`被使用时，函数调用是一个“构造器调用”
+
+   -  模拟面向类的机制
+
+      ```javascript
+      function Foo(name) {
+      	this.name = name;
+      }
+
+      Foo.prototype.myName = function() {
+      	return this.name;
+      };
+
+      var a = new Foo( "a" );
+      var b = new Foo( "b" );
+
+      a.myName(); // "a"
+      b.myName(); // "b"
+      ```
+
+      1. `this.name = name`：在每个对象上添加了`.name`属性，和类的实例包装数据值很相似。
+      2. `Foo.prototype.myName = ...`：这也许是更有趣的技术，它在`Foo.prototype`对象上添加了一个属性（函数）。
+
+      `.constructor`不是一个魔法般不可变的属性。它是不可枚举的，但是它的值是可写的（可以改变），而且，你可以在`[[Prototype]]`链上的任何对象上添加或覆盖（有意或无意地）名为`constructor`的属性，用你感觉合适的任何值。
+
+      `a1.constructor`是极其不可靠的，在你的代码中不应依赖的不安全引用。**一般来说，这样的引用应当尽量避免。**
+
+   -  “（原型）继承”
+
+      ```javascript
+      unction Foo(name) {
+      	this.name = name;
+      }
+
+      Foo.prototype.myName = function() {
+      	return this.name;
+      };
+
+      function Bar(name,label) {
+      	Foo.call( this, name );
+      	this.label = label;
+      }
+
+      // 这里，我们创建一个新的`Bar.prototype`链接链到`Foo.prototype`
+      Bar.prototype = Object.create( Foo.prototype );
+
+      // 注意！现在`Bar.prototype.constructor`不存在了，
+      // 如果你有依赖这个属性的习惯的话，可以被手动“修复”。
+
+      Bar.prototype.myLabel = function() {
+      	return this.label;
+      };
+
+      var a = new Bar( "a", "obj a" );
+
+      a.myName(); // "a"
+      a.myLabel(); // "obj a"
+      ```
+
+      以下方式存在误解:
+
+      ```javascript
+      // 不会如你期望的那样工作!
+      Bar.prototype = Foo.prototype;
+
+      // 会如你期望的那样工作
+      // 但会带有你可能不想要的副作用 :(
+      Bar.prototype = new Foo();
+      ```
+
+      -  `Bar.prototype = Foo.prototype`不会创建新对象让`Bar.prototype`链接。它只是让`Bar.prototype`成为`Foo.prototype`的另一个引用，将`Bar`直接链到`Foo`链着的 **同一个对象**：`Foo.prototype`。这意味着当你开始赋值时，比如`Bar.prototype.myLabel = ...`，你修改的 **不是一个分离的对象** 而是那个被分享的`Foo.prototype`对象本身，它将影响到所有链接到`Foo.prototype`的对象。
+      -  `Bar.prototype = new Foo()`**确实** 创建了一个新的对象，这个新对象也的确链接到了我们希望的`Foo.prototype`。但是，它是用`Foo(..)`“构造器调用”来这样做的。如果这个函数有任何副作用（比如logging，改变状态，注册其他对象，**向this添加数据属性**，等等），这些副作用就会在链接时发生（而且很可能是对错误的对象！），而不是像可能希望的那样，仅最终在`Bar()`的“后代”被创建时发生
+      -  使用`Object.create(..)`来制造一个新对象，这个对象被正确地链接，而且没有调用`Foo(..)`时所产生的副作用。一个轻微的缺点是，我们不得不创建新对象，并把旧的扔掉，而不是修改提供给我们的默认既存对象。
+      -   ES6之前，有一个非标准的，而且不是完全对所有浏览器通用的方法：通过可以设置的`.__proto__`属性。ES6中增加了`Object.setPrototypeOf(..)`辅助工具，它提供了标准且可预见的方法。
+
+      ```javascript
+      // ES6以前
+      // 扔掉默认既存的`Bar.prototype`
+      Bar.prototype = Object.create( Foo.prototype );
+
+      // ES6+
+      // 修改既存的`Bar.prototype`
+      Object.setPrototypeOf( Bar.prototype, Foo.prototype );
+      ```
+
+   -  "类"之间的关系
+
+      考察一个实例（一个JS对象）的继承血统（在JS中是委托链接），在传统的面向类环境中称为 *自省（introspection）*（或 *反射（reflection）*）
+
+      ```javascript
+      function Foo() {
+      	// ...
+      }
+
+      Foo.prototype.blah = ...;
+
+      var a = new Foo();
+      ```
+
+      `instanceof`操作符的左边操作数接收一个普通对象，右边操作数接收一个 **函数**。`instanceof`回答的问题是：**在a的整个[[Prototype]]链中，有没有出现被那个被Foo.prototype所随便指向的对象？**
+
+      ​
+
       ​
