@@ -435,7 +435,7 @@ OO或者面向类的编程强调数据和操作它的行为之间有固有的联
       -  `Bar.prototype = Foo.prototype`不会创建新对象让`Bar.prototype`链接。它只是让`Bar.prototype`成为`Foo.prototype`的另一个引用，将`Bar`直接链到`Foo`链着的 **同一个对象**：`Foo.prototype`。这意味着当你开始赋值时，比如`Bar.prototype.myLabel = ...`，你修改的 **不是一个分离的对象** 而是那个被分享的`Foo.prototype`对象本身，它将影响到所有链接到`Foo.prototype`的对象。
       -  `Bar.prototype = new Foo()`**确实** 创建了一个新的对象，这个新对象也的确链接到了我们希望的`Foo.prototype`。但是，它是用`Foo(..)`“构造器调用”来这样做的。如果这个函数有任何副作用（比如logging，改变状态，注册其他对象，**向this添加数据属性**，等等），这些副作用就会在链接时发生（而且很可能是对错误的对象！），而不是像可能希望的那样，仅最终在`Bar()`的“后代”被创建时发生
       -  使用`Object.create(..)`来制造一个新对象，这个对象被正确地链接，而且没有调用`Foo(..)`时所产生的副作用。一个轻微的缺点是，我们不得不创建新对象，并把旧的扔掉，而不是修改提供给我们的默认既存对象。
-      -   ES6之前，有一个非标准的，而且不是完全对所有浏览器通用的方法：通过可以设置的`.__proto__`属性。ES6中增加了`Object.setPrototypeOf(..)`辅助工具，它提供了标准且可预见的方法。
+      -  ES6之前，有一个非标准的，而且不是完全对所有浏览器通用的方法：通过可以设置的`.__proto__`属性。ES6中增加了`Object.setPrototypeOf(..)`辅助工具，它提供了标准且可预见的方法。
 
       ```javascript
       // ES6以前
@@ -463,6 +463,99 @@ OO或者面向类的编程强调数据和操作它的行为之间有固有的联
 
       `instanceof`操作符的左边操作数接收一个普通对象，右边操作数接收一个 **函数**。`instanceof`回答的问题是：**在a的整个[[Prototype]]链中，有没有出现被那个被Foo.prototype所随便指向的对象？**
 
-      ​
+      不幸的是，这意味着如果你拥有可以用于测试的 **函数**（`Foo`，和它带有的`.prototype`引用），你只能查询某些对象（`a`）的“祖先”。如果你有两个任意的对象，比如`a`和`b`，而且你想调查是否 *这些对象* 通过`[[Prototype]]`链相互关联，单靠`instanceof`帮不上什么忙
 
-      ​
+      ```javascript
+      Foo.prototype.isPrototypeOf( a ); // true
+      ```
+
+      注意在这种情况下，我们并不真正关心（甚至 *不需要*）`Foo`，我们仅需要一个 **对象**（在我们的例子中就是随意标志为`Foo.prototype`）来与另一个 **对象** 测试。`isPrototypeOf(..)`回答的问题是：**在a的整个[[Prototype]]链中，Foo.prototype出现过吗？**
+
+      大多数浏览器（不是全部！）还一种长期支持的，非标准方法可以访问内部的`[[Prototype]]`：
+
+      ```javascript
+      a.__proto__ === Foo.prototype; // true
+      ```
+
+      这个奇怪的`.__proto__`（直到ES6才标准化！）属性“魔法般地”取得一个对象内部的`[[Prototype]]`作为引用
+
+      和我们早先看到的`.constructor`一样，`.__proto__`实际上不存在于你考察的对象上。事实上，它存在于（不可枚举地）内建的`Object.prototype`上，和其他的共通工具在一起
+
+      而且，`.__proto__`看起来像一个属性，但实际上将它看做是一个 getter/setter 更合适
+
+      ```javascript
+      Object.defineProperty( Object.prototype, "__proto__", {
+      	get: function() {
+      		return Object.getPrototypeOf( this );
+      	},
+      	set: function(o) {
+      		// setPrototypeOf(..) as of ES6
+      		Object.setPrototypeOf( this, o );
+      		return o;
+      	}
+      } );
+      ```
+
+      所以，当我们访问`a.__proto__`（取得它的值）时，就好像调用`a.__proto__()`（调用getter函数）。虽然getter函数存在于`Object.prototype`上（参照第二章，`this`绑定规则），但这个函数调用将`a`用作它的`this`，所以它相当于在说`Object.getPrototypeOf( a )`
+
+      `.__proto__`还是一个可设置的属性，就像早先展示过的ES6`Object.setPrototypeOf(..)`。然而，一般来说你 **不应该改变一个既存对象的[[Prototype]]**
+
+5. ### 对象链接
+
+   `[[Prototype]]`机制是一个内部链接，它存在于一个对象上，这个对象引用一些其他的对象。
+
+   1. 创建链接
+
+      `Object.create(..)`创建了一个链接到我们指定的对象（`foo`）上的新对象（`bar`），这给了我们`[[Prototype]]`机制的所有力量（委托），而且没有`new`函数作为类和构造器调用产生的任何没必要的复杂性，搞乱`.prototype`和`.constructor` 引用，或任何其他的多余的东西。
+
+      **注意：** `Object.create(null)`创建一个拥有空（也就是`null`）`[[Prototype]]`链接的对象，如此这个对象不能委托到任何地方。 详见：Object.create(null) -> undefined
+
+      因为这样的对象没有原形链，`instancof`操作符（前面解释过）没有东西可检查，所以它总返回`false`。
+
+      由于他们典型的用途是在属性中存储数据，这种特殊的空`[[Prototype]]`对象经常被称为“dictionaries（字典）”，这主要是因为它们没有可能受到在`[[Prototype]]`链上任何委托属性/函数的影响，所以它们是纯粹的扁平数据存储。
+
+      ```javascript
+      if (!Object.create) {
+      	Object.create = function(o) {
+      		function F(){}
+      		F.prototype = o;
+      		return new F();
+      	};
+      }
+      ```
+
+      这个填补工具通过一个一次性的`F`函数并覆盖它的`.prototype`属性来指向我们想连接到的对象。之后我们用`new F()`构造器调用来制造一个将会链到我们指定对象上的新对象。
+
+      ```javascript
+      var anotherObject = {
+      	cool: function() {
+      		console.log( "cool!" );
+      	}
+      };
+
+      var myObject = Object.create( anotherObject );
+
+      myObject.doCool = function() {
+      	this.cool(); // internal delegation!
+      };
+
+      myObject.doCool(); // "cool!"
+      ```
+
+      这里，我们调用`myObject.doCool()`，它是一个 *实际存在于* `myObject`上的方法，这使我们的API设计更清晰。*在它内部*，我们的实现依照 **委托设计模式**，利用`[[Prototype]]`委托到`anotherObject.cool()`。
+
+   # Review
+
+   1. 当试图在一个对象上进行属性访问，而对象没有该属性时，对象内部的`[[Prototype]]`链接定义了`[[Get]]`操作。下一步应当到哪里寻找它。这种对象到对象的串行链接定义了对象的“原形链”（和嵌套的作用域链有些相似），在解析属性时发挥作用。
+
+   2. 所有普通的对象用内建的`Object.prototype`作为原形链的顶端（就像作用域查询的顶端是全局作用域），如果属性没能在链条的前面任何地方找到，属性解析就会在这里停止。`toString()`，`valueOf()`，和其他几种共同工具都存在于这个`Object.prototype`对象上，这解释了语言中所有的对象是如何能够访问他们的。
+
+   3. 使两个对象相互链接在一起的最常见的方法是将`new`关键字与函数调用一起使用，在它的四个步骤中，就会建立一个新对象链接到另一个对象。
+
+   4. 那个用`new`调用的函数有一个被随便地命名为`.prototype`的属性，这个属性所引用的对象恰好就是这个新对象链接到的“另一个对象”。带有`new`的函数调用通常被称为“构造器”，尽管实际上它们并没有像传统的面相类语言那样初始化一个类。
+
+   5. 虽然这些JavaScript机制看起来和传统面向类语言的“初始化类”和“类继承”类似，而在JavaScript中的关键区别是，没有拷贝发生。取而代之的是对象最终通过`[[Prototype]]`链链接在一起。
+
+   6. 由于各种原因，不光是前面提到的术语，“继承”（和“原型继承”）与所有其他的OO用语，在考虑JavaScript实际如何工作时都没有道理。
+
+      相反，“委托”是一个更确切的术语，因为这些关系不是 *拷贝* 而是委托 **链接**。
