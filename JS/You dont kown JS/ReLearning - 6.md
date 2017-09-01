@@ -225,3 +225,94 @@
          e == f;					// false
          ```
 
+3. 文法`grammar`
+
+   1. 语句完成值
+
+      `do { .. }`
+
+   2. 表达式副作用
+
+      -  ```javascript
+         function foo() {
+         	a = a + 1;
+         }
+
+         var a = 1;
+         foo();		// 结果：`undefined`，副作用：改变 `a`
+         ```
+
+      -  ```javascript
+         var a = 42;
+         var b = a++;
+
+         a;	// 43
+         b;	// 42 
+         ```
+
+      -  `delete`操作符
+
+         如果被请求的操作是合法/可允许的，`delete`操作符的结果值为`true`，否则结果为`false`。但是这个操作符的副作用是它移除了属性（或数组值槽）
+
+   3. 上下文规则
+
+      1. JSON-P
+
+         实际上完全合法的JSON值`{"a":42}`本身将会抛出一个JS错误，因为它被翻译为一个带有非法标签的语句块儿。但是`foo({"a":42})`是一个合法的JS，因为在它里面，`{"a":42}`是一个被传入`foo(..)`的`object`字面量值。所以，更合适的说法是，**JSON-P使JSON成为合法的JS文法！**
+
+      2. ```javascript
+         [] + {}; // "[object Object]"
+         {} + []; // 0
+         ```
+
+         在第一行中，`{}`出现在`+`操作符的表达式中，因此被翻译为一个实际的值（一个空`object`）。第四章解释过，`[]`被强制转换为`""`因此`{}`也会被强制转换为一个`string`：`"[object Object]"`。
+
+         但在第二行中，`{}`被翻译为一个独立的`{}`空代码块儿（它什么也不做）。块儿不需要分号来终结它们，所以这里缺少分号不是一个问题。最终，`+ []`是一个将`[]`*明确强制转换* 为`number`的表达式，而它的值是`0`。
+
+      3. 结构赋值
+
+         ```javascript
+         function getData() {
+         	// ..
+         	return {
+         		a: 42,
+         		b: "foo"
+         	};
+         }
+
+         var { a, b } = getData();
+
+         console.log( a, b ); // 42 "foo"
+         ```
+
+4. 一些错误补充
+
+   1. 过早使用变量
+
+      ES6定义了一个（坦白地说，让人困惑地命名的）新的概念，称为TDZ（“Temporal Dead Zone” —— 时间死区）
+
+      TDZ指的是代码中还不能使用变量引用的地方，因为它还没有到完成它所必须的初始化。
+
+      ```javascript
+      {
+      	a = 2;		// ReferenceError!
+      	let a;
+      }
+      ```
+
+   2. ```javascript
+      {
+      	typeof a;	// undefined
+      	typeof b;	// ReferenceError! (TDZ)
+      	let b;
+      }
+      {
+      	typeof a;	// undefined
+      	typeof b;	// ReferenceError! (TDZ)
+      	let b;
+      }
+      ```
+
+   3. 函数参数
+
+      遵循一个简单的规则：**绝不同时引用一个被命名参数 和 它相应的arguments值槽**
