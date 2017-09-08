@@ -1,13 +1,5 @@
-//
-//  stack - arr.h
-//  Stack
-//
-//  Created by Jamie on 9/7/17.
-//  Copyright © 2017 Jamie. All rights reserved.
-//
-
-#ifndef stack___arr_h
-#define stack___arr_h
+#ifndef stack_arr_h
+#define stack_arr_h
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,11 +22,11 @@ bool IsEmpty(Stack);
 
 bool IsFull(Stack);
 
-Stack CreateStack(int max);
+Stack CreateStack(int);
 
 void DisposeStack(Stack);
 
-void Push(Stack);
+void Push(Stack, ElementType);
 
 void Pop(Stack);
 
@@ -42,7 +34,7 @@ ElementType Top(Stack);
 
 ElementType TopAndPop(Stack);
 
-#endif /* stack___arr_h */
+#endif /* stack_arr_h */
 
 
 
