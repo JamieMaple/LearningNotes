@@ -28,7 +28,7 @@ bool IsEmpty(Stack stack) {
  * params: Stack pointer
  * return void
  */
-void MakeEmpty(Stack stack) {
+void DisposeStack(Stack stack) {
     Stack tempCell;
     Stack nextCell;
     
