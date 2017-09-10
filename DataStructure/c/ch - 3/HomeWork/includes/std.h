@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define Error(str) fprintf(stderr, ""%s\n, str), exit(1);
-#define FatalError(str) Error(str)
+#define Error(str) fprintf(stderr, "%s\n", str), exit(1);
 
+#define FatalError(str) Error(str)
 
 #endif

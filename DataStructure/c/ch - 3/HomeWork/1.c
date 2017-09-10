@@ -15,7 +15,11 @@ void ThroughList(List, void (*p)(List));
 void DisposeList(List);
 
 int main(void) {
-  
+  printf("hello World\n");
+
+  Error("None");
+
+  printf("dsfsdfs\n");
 
   return 0;
 }
