@@ -1,7 +1,28 @@
-#include <stdio.h>
-
+#include "testHeader.h"
+#include "std.h"
+#define SIZE 5
+void display(SingleList);
 int main(void) {
-    printf("Hello, World!\n");
+    
+    SingleList testList = CreateList();
+    FindNode(testList, 10);
+    for (int i = 0; i < SIZE; i++) {
+        AppendNode(testList, i);
+    }
+    
+    
+    ForEachListNode(testList, display);
+    
+    DisposeSingleList(testList);
+    
     
     return 0;
+}
+
+void display(SingleList L) {
+    SingleList current = L -> next;
+    for (int i = 0; current != NULL; i++) {
+        printf("第%d个元素为%d\n", i+1, current -> element);
+        current = current -> next;
+    }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7DD6F59B1F665ABD00BC6AFF /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 7DD6F59A1F665ABD00BC6AFF /* main.c */; };
+		7DD6F5A31F66870900BC6AFF /* testHeader.c in Sources */ = {isa = PBXBuildFile; fileRef = 7DD6F5A11F66870900BC6AFF /* testHeader.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,9 @@
 /* Begin PBXFileReference section */
 		7DD6F5971F665ABD00BC6AFF /* HomeworkProject */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HomeworkProject; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DD6F59A1F665ABD00BC6AFF /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		7DD6F5A11F66870900BC6AFF /* testHeader.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = testHeader.c; sourceTree = "<group>"; };
+		7DD6F5A21F66870900BC6AFF /* testHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testHeader.h; sourceTree = "<group>"; };
+		7DD6F5A41F66996100BC6AFF /* std.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = std.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +62,9 @@
 			isa = PBXGroup;
 			children = (
 				7DD6F59A1F665ABD00BC6AFF /* main.c */,
+				7DD6F5A11F66870900BC6AFF /* testHeader.c */,
+				7DD6F5A21F66870900BC6AFF /* testHeader.h */,
+				7DD6F5A41F66996100BC6AFF /* std.h */,
 			);
 			path = HomeworkProject;
 			sourceTree = "<group>";
@@ -119,6 +126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7DD6F5A31F66870900BC6AFF /* testHeader.c in Sources */,
 				7DD6F59B1F665ABD00BC6AFF /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +256,7 @@
 				7DD6F5A01F665ABD00BC6AFF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
