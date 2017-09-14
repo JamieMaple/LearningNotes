@@ -13,6 +13,12 @@ typedef int ELementType;
 struct single_list {
     ELementType element;
     struct single_list * next;
+    struct single_list * previous;
+};
+struct single_list_arr {
+    int length;
+    int size;
+    ELementType * element;
 };
 struct stact_list {
     ELementType element;
@@ -22,11 +28,5 @@ struct queue_list {
     ELementType element;
     struct queue_list * next;
 };
-
-
-typedef struct single_list * SingleList, SingleListNode;
-typedef struct stack_list * Stack, StackNode;
-typedef struct queue_list * Queue, QueueNode;
-
 
 #endif

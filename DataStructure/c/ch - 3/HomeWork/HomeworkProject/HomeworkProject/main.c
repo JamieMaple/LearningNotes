@@ -1,28 +1,27 @@
 #include "testHeader.h"
-#include "std.h"
-#define SIZE 5
-void display(SingleList);
+
 int main(void) {
+    DoublyList testList = CreateList();
     
-    SingleList testList = CreateList();
-    FindNode(testList, 10);
-    for (int i = 0; i < SIZE; i++) {
-        AppendNode(testList, i);
+    for (int i = 0; i < 5; i++) {
+        AppendNode(testList, i + 1);
     }
+    puts("外部testList地址");
+    SwapNeighborNode(testList, 5);
+    printf("* list: %p\n** list: %p\n", testList, &testList);
+    DisposeList(testList);
     
+    puts("\n\n\n");
     
-    ForEachListNode(testList, display);
+    int a = 1;
+    int *p1, *p2;
+    p1 = &a;
+    p2 = &a;
     
-    DisposeSingleList(testList);
-    
+    printf("a 自身地址%p\n", &a);
+    printf("p1 内部存放的地址：%p, p2 内部存放的地址：%p\n", p1, p2);
+    printf("p1 自身地址：%p，p2自身地址：%p\n", &p1, &p2);
+    puts("\n\n\n");
     
     return 0;
-}
-
-void display(SingleList L) {
-    SingleList current = L -> next;
-    for (int i = 0; current != NULL; i++) {
-        printf("第%d个元素为%d\n", i+1, current -> element);
-        current = current -> next;
-    }
 }

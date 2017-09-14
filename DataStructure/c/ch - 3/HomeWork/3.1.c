@@ -8,10 +8,9 @@ int main(void) {
         AppendNode(testList, i);
     }
     
-    ForEachListNode(testList, display);
+    display(testList);
     
     DisposeSingleList(testList);
-    
     
     return 0;
 }

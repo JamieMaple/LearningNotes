@@ -5,6 +5,9 @@ SingleList CreateList(void) {
 
   if (head != NULL) {
     head -> next = NULL;
+
+    head -> previous = NULL;
+    
     return head;
   } else {
     FatalError("Create Failed");
@@ -26,8 +29,10 @@ bool AppendNode(SingleList L, ELementType element) {
       lastNode = lastNode -> next;
     }
     tempNode -> element = element;
+
     tempNode -> next = NULL;
 
+    tempNode -> previous = lastNode;
     lastNode -> next = tempNode;
   }
   return true;
@@ -101,6 +106,9 @@ void DisposeSingleList(SingleList L) {
 }
 
 void ForEachListNode(SingleList L, void (*p)(SingleList L)) {
-  (*p)(L);
+  SingleList current = L -> next;
+  for (int i = 0; current != NULL; i++) {
+    (*p)(current);
+  }
 }
 

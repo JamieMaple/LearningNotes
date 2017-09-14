@@ -1,4 +1,6 @@
-#include "../includes/std.h"
+#include "std.h"
+
+typedef struct single_list * SingleList, SingleListNode;
 
 SingleList CreateList(void);
 

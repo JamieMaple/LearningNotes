@@ -1,42 +1,22 @@
 #include "testHeader.h"
-
-SingleList CreateList(void) {
-    SingleList head = (SingleList)malloc(sizeof(SingleListNode));
-    
-    if (head != NULL) {
-        head -> next = NULL;
-        return head;
-    } else {
-        FatalError("Create Failed");
+DoublyList CreateList(void) {
+    DoublyList L = (DoublyList)malloc(sizeof(DoublyListNode));
+    printf("malloc 分配的地址：%p\n", L);
+    if (L == NULL) {
+        FatalError("No space");
     }
+    
+    L -> previous = NULL;
+    L -> next = NULL;
+    
+    return L;
 }
 
-bool IsEmpty(SingleList L) {
+static bool IsEmpty(DoublyList L) {
     return L -> next == NULL;
 }
-
-bool AppendNode(SingleList L, ELementType element) {
-    SingleList lastNode = L;
-    SingleList tempNode = (SingleList)malloc(sizeof(SingleListNode));
-    
-    if (tempNode == NULL) {
-        return false;
-    } else {
-        while(lastNode -> next != NULL) {
-            lastNode = lastNode -> next;
-        }
-        
-        tempNode -> element = element;
-        tempNode -> next = NULL;
-        
-        lastNode -> next = tempNode;
-    }
-    
-    return true;
-}
-
-static SingleList FindPrevious(SingleList L, ELementType element) {
-    SingleList tempNode = L -> next;
+static DoublyList FindPrevious(DoublyList L, ELementType element) {
+    DoublyList tempNode = L -> next;
     if (IsEmpty(L)) {
         FatalError("Empty List");
     } else {
@@ -51,57 +31,58 @@ static SingleList FindPrevious(SingleList L, ELementType element) {
     return tempNode;
 }
 
-bool FindNode(SingleList L, ELementType element) {
-    SingleList previous = FindPrevious(L, element);
-    
-    if (previous -> next == NULL) {
+bool SwapNeighborNode(DoublyList L, ELementType element) {
+    DoublyList previousNode = FindPrevious(L, element);
+    DoublyList currentNode = previousNode -> next;
+    if (currentNode == NULL) {
         return false;
-    } else {
-        return true;
-    }
-}
-
-ELementType Insert(SingleList previous, ELementType element) {
-    SingleList tempNode = (SingleList)malloc(sizeof(SingleListNode));
-    
-    if (tempNode == NULL) {
-        FatalError("Insertion failed");
-    } else {
-        tempNode -> element = element;
-        tempNode -> next = previous -> next;
-        previous -> next = tempNode;
     }
     
-    return element;
-}
-
-bool DeleteNode(SingleList L, ELementType element) {
-    SingleList previous = FindPrevious(L, element);
-    SingleList current  = previous -> next;
+    DoublyList muchPrevious = previousNode -> previous;
+    DoublyList muchNext = currentNode -> next;
     
-    // no this element exist
-    if (previous -> next == NULL) {
-        FatalError('No that element exist!');
-    }
+    muchPrevious -> next = currentNode;
+    currentNode -> previous = muchPrevious;
     
-    previous -> next = current -> next;
-    free(current);
+    currentNode -> next = previousNode;
+    previousNode -> previous = currentNode;
+    
+    previousNode -> next = muchNext;
+    muchNext -> previous = previousNode;
     
     return true;
 }
 
-void DisposeSingleList(SingleList L) {
-    SingleList current = L -> next;
+bool AppendNode(DoublyList L, ELementType element) {
+    DoublyList lastNode = L;
+    DoublyList tempNode = (DoublyList)malloc(sizeof(DoublyListNode));
+    
+    if (tempNode == NULL) {
+        return false;
+    } else {
+        while(lastNode -> next != NULL) {
+            lastNode = lastNode -> next;
+        }
+        tempNode -> element = element;
+        
+        tempNode -> next = NULL;
+        
+        tempNode -> previous = lastNode;
+        lastNode -> next = tempNode;
+    }
+    return true;
+}
+
+void DisposeList(DoublyList L) {
+    DoublyList current = L -> next;
     
     while (current != NULL) {
-        SingleList temp = current -> next;
+        DoublyList temp = current -> next;
         free(current);
         current = temp;
     }
-    L -> next = NULL;
     
-}
-
-void ForEachListNode(SingleList L, void (*p)(SingleList L)) {
-    (*p)(L);
+    L -> next = NULL;
+    puts("内部函数引用地址：");
+    printf("* list: %p\n** list: %p\n", L, &L);
 }
