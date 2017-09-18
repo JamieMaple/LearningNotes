@@ -18,8 +18,9 @@ Chat.prototype.changeRoom = function(room) {
 // process command
 Chat.prototype.processCommand = function(command) {
   var words = command.split(' ')
-  var command = words[0].substring(1, words[0].length).toLowerCase()
   var message = false
+  
+  command = words[0].substring(1, words[0].length).toLowerCase()
 
   switch (command) {
     case 'join':
