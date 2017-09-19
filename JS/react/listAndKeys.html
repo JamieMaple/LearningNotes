@@ -12,22 +12,30 @@
 
     </div>
     <script type="text/babel">
+      function SidebarItem(props) {
+        return (
+          <li>{props.title}</li>
+        )
+      }
+      function ContentItem(props) {
+        return (
+          <div>
+            <h3>{props.title}</h3>
+            <p>{props.content}</p>
+          </div>
+        )
+      }
       function Blog(props) {
         const sidebar = (
           <ul>
             {
               props.posts.map((post) =>
-                <li key={post.id}>
-                  {post.title}
-                </li>
-              )}
+                <SidebarItem key={post.id} title={post.title} />
+            )}
           </ul>
         )
         const content = props.posts.map((post) =>
-          <div key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-          </div>
+          <ContentItem key={post.id} title={post.title} content={post.content} />
         )
         return (
           <div>

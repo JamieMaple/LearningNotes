@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>form 表单</title>
+    <script src="https://unpkg.com/react@latest/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- <script type="text/babel">
+    class FlavorForm extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          value: 'cocounut'
+        }
+
+        this.handleChange = this.handleChange.bind(this)
+        this.handleSumbit = this.handleSumbit.bind(this)
+      }
+      handleChange(e) {
+        this.setState({value: e.target.value})
+      }
+      handleSumbit(e) {
+        alert('Flavor: ' + this.state.value)
+        e.preventDefault()
+      }
+      render() {
+        return (
+          <form onSubmit={this.handleSumbit}>
+            <label>
+              Pick your favorite La Croix flavor:
+              <select value={this.state.value} onChange={this.handleChange}>
+                <option value="grapefruit">Grapefruit</option>
+                <option value="lime">Lime</option>
+                <option value="cocounut">Cocounut</option>
+                <option value="mango">Mango</option>
+              </select>
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        )
+      }
+    }
+    ReactDOM.render(
+      <FlavorForm />,
+      document.getElementById('root')
+    )
+    </script> -->
+    <script type="text/babel">
+      class Reservation extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = {
+            isGoing: true,
+            numberOfGuests: 2
+          }
+
+          this.handleInputChange = this.handleInputChange.bind(this)
+        }
+        handleInputChange(e) {
+          const target = e.target
+          const value = target.type === 'checkbox'? target.checked : target.value
+          const name = target.name
+
+          this.setState({
+            [name]: value
+          })
+        }
+        render() {
+          return (
+            <form>
+              <label>
+                Is going:
+                <input
+                  name="isGoing"
+                  type="checkbox"
+                  checked={this.state.isGoing}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                Number of guests:
+                <input
+                  name="numberOfGuests"
+                  type="number"
+                  value={this.state.numberOfGuests}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+            </form>
+          )
+        }
+      }
+      ReactDOM.render(
+        <Reservation />,
+        document.getElementById('root')
+      )
+    </script>
+  </body>
+</html>
