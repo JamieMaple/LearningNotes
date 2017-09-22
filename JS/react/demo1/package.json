@@ -1,0 +1,19 @@
+{
+  "name": "demo1",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.13"
+  },
+  "scripts": {
+    "start": "react-scripts-with-stylus start",
+    "build": "react-scripts-with-stylus build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "create-react-app-stylus": "^1.1.1"
+  }
+}

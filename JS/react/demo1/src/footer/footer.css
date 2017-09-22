@@ -1,0 +1,27 @@
+.footer {
+  position: relative;
+  border-top: 1px solid #e6e6e6;
+  padding: 10px 15px;
+}
+.left {
+  margin-right: 15%;
+}
+@media (max-width: 320px) {
+  .left {
+    margin-right: 20px;
+  }
+}
+.filters {
+  display: inline-block;
+}
+.filters-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.filters-item a {
+  padding: 3px 7px;
+  border-radius: 3px;
+}
+.selected a {
+  border: 1px solid rgba(175, 47, 47, 0.2);
+}
