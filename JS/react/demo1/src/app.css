@@ -3,6 +3,16 @@ html {
   background: #f7f7f7;
 }
 .wrapper {
-  max-width: 500px;
+  max-width: 60%;
   margin: 0 auto;
+}
+@media (max-width: 414px) {
+  .wrapper {
+    max-width: 90%;
+  }
+}
+@media (max-width: 320px) {
+  .wrapper {
+    max-width: 95%;
+  }
 }

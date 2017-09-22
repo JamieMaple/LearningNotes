@@ -34,6 +34,7 @@
 	content: 'V';
 	font-size: 22px;
 	color: #e6e6e6;
+  cursor: pointer;
 }
 /* body-header */
 .all-completed::before {
@@ -41,18 +42,37 @@
 }
 /* body-row */
 .todo-item {
+  position: relative;
   padding-left: 0;
   cursor: default;
   border-top: 1px solid #e6e6e6;
 }
-.todo-completed {
-  text-decoration: line-through;
-  color: #e6e6e6;
+.todo-item:hover .todo-hook{
+  display: block;
 }
+/* left */
 .left-box {
   display: inline-block;
   width: 65px;
 }
 .todo-checkbox {
-  margin: 0 20px
+  margin: 0 20px;
+  cursor: pointer;
+}
+/* middle */
+a.todo-completed {
+  text-decoration: line-through;
+  color: #e6e6e6;
+}
+/* right */
+.todo-delete {
+  display: none;
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  padding: 3px;
+  line-height: 24px;
+  font-size: 16px;
+  color: #af5b5e;
+  cursor: pointer;
 }
