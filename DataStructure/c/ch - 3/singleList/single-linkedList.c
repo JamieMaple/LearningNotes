@@ -142,21 +142,19 @@ List FindList(const List list, int num) {
     
     return previous -> next;
 }
+
+bool static IsLast(const List list) {
+    return list -> next == NULL;
+}
 /*
  * delete an element
- * params: List head node,
+ * params: List head node, element num
  * return
  */
-bool DeleteNode(const List list, int num) {
+bool DeleteNode(const List list, ElementType num) {
     bool isDeleted = false;
     
     List previous = FindPrevious(list, num);
-    // isLast 的理解：
-    // isLast 保证前元素不为最后一个，当前元素不为NULL
-    // 存在三种情况
-    // 正常情况，中间或者开头
-    // 结尾情况，当元素位于末端
-    // 搜索不到的情况，当前元素不存在，直接就跳过了(前元素为Last，if不成立)
     if (!IsLast(previous)) {
         List deleted = previous -> next;
         previous -> next = deleted -> next;

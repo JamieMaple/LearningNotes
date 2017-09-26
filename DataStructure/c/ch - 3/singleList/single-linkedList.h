@@ -13,6 +13,7 @@ struct node {
     struct node * next;
 };
 
+typedef int ELementType;
 typedef struct node * List, Node;
 
 List CreateList();
