@@ -159,9 +159,9 @@
 
       10. Writing comment
 
-          -  describe the purpose
-          -  what task
-          -  keep up to date
+         -  describe the purpose
+         -  what task
+         -  keep up to date
 
       11. Writing API docs
 
@@ -212,6 +212,10 @@
           ```
 
       12. Writing to be read
+      
+      13. Peer Reviews
+
+      14. Minify
 
           ​
 

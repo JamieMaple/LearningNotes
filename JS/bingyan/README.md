@@ -5,14 +5,14 @@
 ### React
 
 1. vitual DOM 原理的剖析
-   -  diff 算法分析
-   -  React 源码分析
+   -  diff 算法分析   — — doing
+   -  React 源码分析  — — todo
 
 ### Redux
 
 1. redux 源码分析.....
-   -  尝试阅读源码自己实现
-   -  阅读更多的设计模式
+   -  尝试阅读源码自己实现   — — done
+   -  阅读更多的设计模式   — — done
 2. 《JavaScript 设计模式》阅读
 
 ### React Native
@@ -31,8 +31,7 @@
 
 ### CSS
 
-1. css 的....不太记得了。。。。
-2. 大概意思是 css 的嵌套和作用域吧。。。
+1. BFC — (maybe) done
 
 ### 纯函数
 
@@ -51,7 +50,7 @@
    -  对 Promise 构造函数做过的细节不清楚。。。
 4. Generator
    -  算是用的不是很多吧
-5. async / await
+5. async / await (ES 7 语法糖)
    -  原理进一步深入理解吧。。
 
 ---
