@@ -146,6 +146,8 @@
 
 5. `v-show`
 
+   doesnt support `template`
+
    just toggle `display`
 
    difference:
@@ -174,3 +176,276 @@
    pure function => just replace
 
    ​
+
+   Use `Vue.set({target, key, value})` to change Array
+
+   Or use `splice`
+
+3. Object change detection
+
+   `this.$set === Vue.set`
+
+4. `v-for` has a higher priority than `v-if`
+
+5. `v-for` with components
+
+### Event Handling
+
+1. `v-on` listening to events
+
+2. 各种 `v-on` 里面的写法
+
+3. `$event` 在方法中传入
+
+4. Events Modifiers
+
+   -  `.stop`
+
+
+   -  `.prevent`
+
+
+   -  `.capture`
+
+
+   -  `.self`
+
+
+   -  `.once`
+
+   Also can be chained
+
+   **order matters**
+
+5. Key Modifiers
+
+   -  `.exact`
+   -  Mouse Button Modifiers
+
+### Form Input Binding
+
+1. `v-model`
+
+   >  `v-model` is essentially syntax sugar for updating data on user input events, plus special care for some edge cases.
+
+   -  Text
+   -  Multiple Text
+   -  Checkbox
+   -  Radio
+   -  Select
+   -  Multiple Select
+
+2. Modifiers
+
+   -  `.lazy`
+   -  `.number`
+   -  `.trim`
+
+3. With Components
+
+### Components
+
+1. Using
+
+   -  Global Registration
+
+      >  Make sure the component is registered **before** you instantiate the root Vue instance.
+
+      ```vue
+      <div id="example">
+        <my-component></my-component>
+      </div>
+
+      // register
+      Vue.component('my-component', {
+        template: '<div>A custom component!</div>'
+      })
+      // create a root instance
+      new Vue({
+        el: '#example'
+      })
+      ```
+
+   -  Local Registration
+
+      ```javascript
+      var Child = {
+        template: '<div>A custom component!</div>'
+      }
+      new Vue({
+        // ...
+        components: {
+          // <my-component> will only be available in parent's template
+          'my-component': Child
+        }
+      })
+      ```
+
+   -  DOM Template Parsing Caveats
+
+      DOM has some restriction
+
+      ```vue
+      <table>
+        <my-row>...</my-row>s
+      </table>
+      ```
+      has changed to 
+
+      ```vue
+      <table>
+        <tr is="my-row"></tr>
+      </table>
+      ```
+
+   -  `data` must be a function
+
+      **it is very similar to functional programming**
+
+      to solve share data problem
+
+   -  Composing Components
+
+      *parent* with *child*
+
+      ![](https://vuejs.org/images/props-events.png)
+
+2. Props
+
+   -  parent down to child
+
+      ```javascript
+      Vue.component('child', {
+        // declare the props
+        props: ['message'],
+        // like data, the prop can be used inside templates and
+        // is also made available in the vm as this.message
+        template: '<span>{{ message }}</span>'
+      })
+      ```
+
+   -  camelCase and kebab-case
+
+      ```javascript
+      Vue.component('child', {
+        // camelCase in JavaScript
+        props: ['myMessage'],
+        template: '<span>{{ myMessage }}</span>'
+      })
+
+      <!-- kebab-case in HTML -->
+      <child my-message="hello!"></child>
+      ```
+
+   -  Dynamic Props
+
+      use `v-bind` to props
+
+      `v-bind` instead of `v-bind:prop-name` for object props
+
+   -  One-Way data flow
+
+      刚开始感觉这个就很不函数式了....不过 `vue` 的整体感觉确实像是指令式编程
+
+      不过的话他也是和 `React` 差不多利用了父组件的函数更新状态
+
+   -  Prop Validation
+
+3. Non-Prop Attribute
+
+   - Replacing/Merging with Existing Attributes
+
+4. Custom Events
+
+   -  using `v-on` with custom events
+   -  binding native events to components
+   -  `.sync` Modifier
+   -  form input
+
+5. Content Distribution with Slots
+
+   -  Compilation Scope
+   -  Single Slot
+   -  Named Slots
+   -  Scope Slots
+   -  template
+
+
+### Transition / Animation
+
+1. Transition Single Elements / Components
+
+   `<transition`> warpper
+
+   transition classes
+
+   css transitions
+
+   explicit transition durations
+
+   javascript hooks
+
+2. `appear` attribute
+
+3. Transition between elements
+
+   `transition` mode
+
+4. Transition between components
+
+5. List transition
+
+
+
+
+### State Transition
+
+1. Animating state with watchers
+2. Dynamic State Transitions
+3. Organizing Transitions into Components
+
+
+
+### Mixins
+
+1. 栗子
+
+   ```javascript
+   // define a mixin object
+   var myMixin = {
+     created: function () {
+       this.hello()
+     },
+     methods: {
+       hello: function () {
+         console.log('hello from mixin!')
+       }
+     }
+   }
+   // define a component that uses this mixin
+   var Component = Vue.extend({
+     mixins: [myMixin]
+   })
+   var component = new Component() // => "hello from mixin!"
+   ```
+
+2. merge to array and objectpal
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
