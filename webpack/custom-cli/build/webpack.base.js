@@ -1,6 +1,5 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // @test: if is development mode
 // const isDev = process.env.NODE_ENV === 'development'
@@ -22,8 +21,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './index.html'
-    }),
-    new BundleAnalyzer()
+    })
   ],
   resolve: {
     extensions: ['.js', '.jsx', '.json']

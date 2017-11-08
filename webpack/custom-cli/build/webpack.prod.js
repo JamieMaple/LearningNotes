@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const BundleAnalyzer = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const NyanProgressPlugin = require('nyan-progress-webpack-plugin')
 const common = require('./webpack.base')
 
 module.exports = merge(common, {
@@ -21,7 +23,21 @@ module.exports = merge(common, {
         'NODE_ENV': JSON.stringify('production')
       }
     }),
-    new ExtractTextPlugin('css/[name]-[hash].css')
+    new ExtractTextPlugin('css/[name]-[hash].css'),
+    new BundleAnalyzer({
+      analyzerMode: 'static',
+      reportFilename: 'report.html',
+      openAnalyzer: true,
+      generateStatsFile: true
+    }),
+    new NyanProgressPlugin({
+      debounceInterval: 60,
+      nyanCatSays(progress, message) {
+        if (progress === 1) {
+          return 'Maple~~done~~'
+        }
+      }
+    })
   ],
   module: {
     rules: [
