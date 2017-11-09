@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-const img = new Image()
-document.body.appendChild(img)
-console.log(1)
-
 class App extends Component {
   render() {
     return (
