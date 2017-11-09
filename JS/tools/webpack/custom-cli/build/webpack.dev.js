@@ -4,6 +4,9 @@ const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const common = require('./webpack.base')
 
 module.exports = merge(common, {
+  entry: {
+    app: ['webpack-hot-middleware/client'] // middleware express
+  },
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: __dirname + '/dist',
@@ -13,12 +16,15 @@ module.exports = merge(common, {
     port: '8080'
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         'NODE_ENV': JSON.stringify('development')
       }
     }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new FriendlyErrorsPlugin({
       compilationSuccessInfo: {
         messages: ['You application is running here http://localhost:3000', 'open your browser'],
@@ -31,11 +37,10 @@ module.exports = merge(common, {
       {
         test: /\.(css|scss)$/,
         use: [
-          'style-loader', 
+          'style-loader',
           {
             loader: 'css-loader'
-          }
-          , 
+          },
           'postcss-loader'
         ]
       }

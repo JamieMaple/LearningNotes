@@ -11,12 +11,13 @@ function resolve(pathname) {
 
 module.exports = {
   entry: {
-    app: './src/index.js',
+    app: ['./src/index.js'],
     vendor: ['react', 'react-dom']
   },
   output: {
     path: resolve('dist'),
-    filename: 'js/[name].js'
+    filename: 'js/[name].js',
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -31,13 +32,16 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
-        use: 'babel-loader'
+        use: [
+          'babel-loader', 
+          'eslint-loader'
+        ]
       },
       {
-        test: /\.(jpg|jpeg|png|gif|svg)$/,
+        test: /\.(jpe?g|png|gif|svg|ico)$/,
         use: [
           {
-            loader: 'file-loader',
+            loader: 'url-loader',
             options: {
               limit: 10000,
               name: '[name].[ext]',
@@ -49,7 +53,7 @@ module.exports = {
       {
         test: /\.(eot|woff|ttf)$/,
         use: [{
-          loader: 'file-loader',
+          loader: 'url-loader',
           options: {
             name: '[name].[ext]',
             outputPath: 'fonts/'
