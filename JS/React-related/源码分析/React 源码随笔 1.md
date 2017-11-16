@@ -51,6 +51,52 @@ import {
 import ReactDebugCurrentFrame from './ReactDebugCurrentFrame'
 ```
 
+`React` 主要组成结构：
+
+```javascript
+var React = {
+  // ReactChildren.js
+  Children: {
+    map,
+    forEach,
+    count,
+    toArray,
+    only,
+  },
+  // ReactBaseClasses.js
+  Component,
+  PureComponent,
+  unstable_AsyncComponent: AsyncComponent, // 异步组件貌似暂时 unstable (不稳定)？
+  // ReactElement.js 和 ReactElementValidator.js ，然后判断当前环境选取合适的函数
+  createElement: __DEV__ ? createElementWithValidation : createElement,
+  cloneElement: __DEV__ ? cloneElementWithValidation : cloneElement,
+  createFactory: __DEV__ ? createFactoryWithValidation : createFactory,
+  isValidElement: isValidElement,
+  // 版本号
+  version: ReactVersion,
+  // 正如其名
+  __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED: {
+    ReactCurrentOwner,
+    // Used by renderers to avoid bundling object-assign twice in UMD bundles:
+    assign,
+  },
+};
+// 默认是没有的
+if (enableReactFragment) {
+  React.Fragment = REACT_FRAGMENT_TYPE;
+}
+
+if (__DEV__) {
+  Object.assign(React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED, {
+    // These should not be included in production.
+    ReactDebugCurrentFrame,
+    // Shim for React DOM 16.0.0 which still destructured (but not used) this.
+    // TODO: remove in React 17.0.
+    ReactComponentTreeHook: {},
+  });
+}
+```
+
 1. ReactBaseClass — export 三种 Component
 
    [repo](https://github.com/facebook/react/blob/master/packages/react/src/ReactBaseClasses.js)
