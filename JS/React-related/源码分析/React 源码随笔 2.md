@@ -23,8 +23,6 @@
      })
      return '$' + escapedString
    }
-
-   function 
    ```
 
    =.= fb 还有一个 TODO 没有写吧：测试单孩子或者只有一个孩子数组是否有相同的key
