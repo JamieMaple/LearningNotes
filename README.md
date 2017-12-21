@@ -1,10 +1,8 @@
 # LearningNotes
 Learning Notes for Jamie
 
-notes
+拖延症晚期补完计划
 
-JSLearning
+|     任务   | done  |
+|   angular  | false |
 
-more
-
-test
