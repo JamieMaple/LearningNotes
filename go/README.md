@@ -463,16 +463,80 @@ interface 要注意 nil 传入问题
 
 比如最常用的 `fmt.Print` 就是用了空接口
 
+###### type assertion
 
+> A type assertion provides access to an interface value's underlying concrete value.
 
+写法：
 
+``` go
+  t, ok := i.(string)
+```
 
+> To test whether an interface value holds a specific type, a type assertion can return two values: 
+> the underlying value and a boolean value that reports whether the assertion succeeded.
 
+传两个就算第一个类型不符合，依然不会报错
 
+###### type switch
 
+和 go 的 switch 一样，自带 break
 
+``` go
+var i interface{}
 
+switch v := i.(type) {
+  case int:
+    fmt.Printf("int")
+  case string:
+    fmt.Printf("string")
+  default:
+    fmt.Printf("no type found !")
+}
 
+```
+
+###### stringers
+
+``` go
+type Stringer interface{
+  String() string
+}
+```
+
+> A Stringer is a type that can describe itself as a string.
+> The fmt package (and many others) look for this interface to print values.
+
+个人的理解是可以配合 fmt 标准包使用
+
+##### Errors
+
+``` go
+type error interface {
+  Error() string
+}
+```
+
+> As with fmt.Stringer, the fmt package looks for the error interface when printing values.
+
+``` go
+// 一个常见的错误处理
+i, err = someFun()
+if err != nil {
+  fmt.Println(err)
+  return
+}
+
+// do others
+```
+
+返回 error 类型配套一个 Error 接口方法
+
+##### io Readers
+
+``` go
+func (T) Read(b []byte) (n int, e error)
+```
 
 
 
