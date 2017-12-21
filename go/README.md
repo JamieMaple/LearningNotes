@@ -459,7 +459,9 @@ interface 要注意 nil 传入问题
 `interface{}` 所有的类型都实现空接口
 
 
+> Empty interfaces are used by code that handles values of unknown type.
 
+比如最常用的 `fmt.Print` 就是用了空接口
 
 
 
