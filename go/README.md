@@ -538,5 +538,51 @@ if err != nil {
 func (T) Read(b []byte) (n int, e error)
 ```
 
+### Concurrency
+
+##### go routines
+
+``` go
+go f(x, y, z)
+```
+
+> 协程：A goroutine is a lightweight thread managed by the Go runtime.
+
+协程进行时如果主程序不等待那么协程会结束而消亡
+
+##### Channels
+
+``` go
+// created
+ch := make(chan int)
+
+// send and assign
+ch <- v
+v := <- ch
+// The data flows in the direction of the arrow
+```
+
+> By default, sends and receives block until the other side is ready
+
+
+``` go
+func main() {
+  s := []int{7, 2, 8, 9, -1, 4}
+
+  c := make(chan int)
+
+  go sum(s[:len(s) / 2], c)
+  go sum(s[len(s) / 2:], c)
+  x, y := <-c, <-c
+  fmt.Println(x, y, x + y)
+}
+```
+
+##### Buffered Channels
+
+``` go
+ch := make(chan int, 10)
+```
+
 
 
