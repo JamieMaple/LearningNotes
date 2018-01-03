@@ -59,7 +59,6 @@ const setParticles = (canvas, imageSrc) => ({
   function cal() {
     ctx.drawImage(image, posX, posY, image.width, image.height)
     const imageData = ctx.getImageData(posX, posY, image.width, image.height)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
     const arr = []
     const rows = imageData.height
     const cols = imageData.width
@@ -79,6 +78,7 @@ const setParticles = (canvas, imageSrc) => ({
         }
       }
     }
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     
     return arr
   }

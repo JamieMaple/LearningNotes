@@ -1,16 +1,20 @@
+import Tween from './tween'
+
 const setImageParticles = (canvas, imageSrc) => ({
   imgH,
   imgW,
   posX = 0,
   posY = 0,
-  speed = 0.01,
+  speed = 0.08,
   rect = 5,
-  delay
-  // duration = 20
+  delay,
+  duration = 100,
+  changeFuncName = 'Expo',
+  mode = 'ease-in'
 }) => {
   const ctx = canvas.getContext('2d')
-  // const durationTime = duration
-  let speedTmpl = speed
+  const durationTime = duration
+  const MODE = mode
 
   ctx.clearRect(0, 0, canvas.width, canvas.height)
 
@@ -29,35 +33,26 @@ const setImageParticles = (canvas, imageSrc) => ({
 
       this.x = x
       this.y = y
-      this.img = img
-      this.startX = startX
-      this.startY = startY
       this.dx = startX
       this.dy = startY
-      this.dz = 0
+      this.startX = this.dx
+      this.startY = this.dy
+      this.img = img
     }
 
-    getSteps (a, b) {
-      return (a - b) * speedTmpl
-    }
-
-    update() {
-      this.dx = this.dx + this.getSteps(this.x, this.dx)
-      this.dy = this.dy + this.getSteps(this.y, this.dy)
-      this.dz = 0
+    update(dx, dy) {
+      this.dx = dx
+      this.dy = dy
     }
 
     paint() {
-      ctx.save()
-      ctx.putImageData(this.img, canvas.width / 2 + (this.dx - canvas.width / 2), canvas.height / 2 + (this.dy - canvas.height / 2))
-      ctx.restore()
+      ctx.putImageData(this.img, this.dx, this.dy)
     }
   }
 
   function cal() {
     ctx.drawImage(image, posX, posY, image.width, image.height)
     const imageData = ctx.getImageData(posX, posY, image.width, image.height)
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
     const arr = []
     const rows = imageData.height
     const cols = imageData.width
@@ -70,51 +65,72 @@ const setImageParticles = (canvas, imageSrc) => ({
         const y = posY + image.y + j
         arr.push(
           new Dot(
-            x,
-            y,
+            posX + image.x + i,
+            posY + image.y + j,
             ctx.getImageData(x, y, rect, rect)
           )
         )
       }
     }
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
     
     return arr
   }
 
   function draw(arr) {
     if (Array.isArray(arr)) {
+      let changeFunc = Tween.Expo
+      if (Tween[changeFuncName]) {
+        changeFunc = Tween[changeFuncName]
+      }
+      if (MODE === 'ease-out') {
+        changeFunc = changeFunc.easeOut
+      } else if (MODE === 'ease-in-out') {
+        changeFunc = changeFunc.easeInOut
+      } else {
+        changeFunc = changeFunc.easeIn
+      }
+      let count = 0
       window.requestAnimationFrame(function animate() {
-        let count = 0
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         arr.forEach(item => {
-          if (Math.abs(item.x - item.dx) < 0.1 && Math.abs(item.y - item.dy) < 0.1) {
-            count += 1
-          } else {
-            item.update()
-          }
+          const dx = changeFunc(count, item.startX, item.x - item.startX, durationTime)
+          const dy = changeFunc(count, item.startY, item.y - item.startY, duration)
+          item.update(dx, dy)
           item.paint()
         })
-        if (count < arr.length) {
+        count += 1
+        if (count <= duration) {
           window.requestAnimationFrame(animate)
         }
       })
     }
   }
 
+  function delayTime(callback, delay) {
+    const prev = +new Date
+    window.requestAnimationFrame(function timer() {
+      const now = +new Date
+      if (now - prev < delay) {
+        window.requestAnimationFrame(timer)
+      } else {
+        callback()
+      }
+    })
+  }
+
   image.src = imageSrc
 
   image.onload = function() {
     const arr = cal()
-    console.log(arr)
-    // if (typeof delay === 'number' && delay >= 0) {
-    //   setTimeout(draw.bind(null, arr), delay)
-    // } else {
-    //   draw(arr)
-    // }
-    arr.forEach(item => {
-      item.paint()
-    })
-    // console.log(arr)
+    if (typeof delay === 'number' && delay >= 0) {
+      delayTime(() => {
+        arr.forEach((item, index) => item.paint())
+        draw(arr)
+      }, delayTime)
+    } else {
+      draw(arr)
+    }
   }
 }
 

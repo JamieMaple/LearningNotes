@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Tween from './tween'
 const canvas = document.getElementsByTagName('canvas')[0]
 canvas.height = 1000
@@ -10,8 +11,8 @@ class Dot {
     this.x = x
     this.y = y
     // test
-    this.dx = 10
-    this.dy = 20
+    this.dx = 200
+    this.dy = 200
     this.startX = this.dx
     this.startY = this.dy
     this.rect = rect
@@ -31,19 +32,24 @@ const testDot = new Dot(140, 800, 100)
 
 testDot.paint()
 
-const duration = 50
-let count = 0
+const testImg = ctx.getImageData(250, 200, 10, 10)
 
-const changeFunc = Tween.Elastic.easeOut
 
-window.requestAnimationFrame(function animation() {
-  const dx = changeFunc(count, testDot.startX, testDot.x - testDot.startX, duration)
-  const dy = changeFunc(count, testDot.startY, testDot.y - testDot.startY, duration)
-  testDot.update(dx, dy)
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  testDot.paint()
-  count += 1
-  if (count < duration) {
-    window.requestAnimationFrame(animation)
-  }
-})
+ctx.putImageData(testImg, 200, 100)
+
+// const duration = 50
+// let count = 0
+
+// const changeFunc = Tween.Elastic.easeOut
+
+// window.requestAnimationFrame(function animation() {
+//   const dx = changeFunc(count, testDot.startX, testDot.x - testDot.startX, duration)
+//   const dy = changeFunc(count, testDot.startY, testDot.y - testDot.startY, duration)
+//   testDot.update(dx, dy)
+//   ctx.clearRect(0, 0, canvas.width, canvas.height)
+//   testDot.paint()
+//   count += 1
+//   if (count < duration) {
+//     window.requestAnimationFrame(animation)
+//   }
+// })

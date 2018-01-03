@@ -18,5 +18,6 @@ Learning Notes for Jamie
 
    - [x] 完成 canvas 的 **系统** 学习
 
-   - [ ] 完成 golang 和 docker 的 **系统** 学习
+   - [ ] grid 布局的系统学习
 
+   - [ ] 完成 golang 和 docker 的 **系统** 学习
