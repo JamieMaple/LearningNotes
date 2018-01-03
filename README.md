@@ -8,7 +8,7 @@ Learning Notes for Jamie
 |    angularJS    | true  |
 |    浏览器渲染原理剖析    | true |
 |     canvas      |true |
-|  包含自动化测试的前端工程化  | false |
+|  包含自动化测试的前端工程化  | doing |
 | golang 和 docker | false |
 |                 |       |
 
