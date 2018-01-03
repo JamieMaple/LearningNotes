@@ -1,0 +1,16 @@
+{
+  "parser": "babel-eslint",
+  "extends": "standard",
+  "rules": {
+    "no-console": "off",
+    "prefer-const": "off",
+    "semi": "off",
+    "func-names": "off",
+    "space-before-function-paren": "off",
+    "class-methods-use-this": "off",
+    "camelcase": "off"
+  },
+  "env": {
+    "browser": true
+  }
+}
