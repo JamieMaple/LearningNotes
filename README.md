@@ -6,8 +6,8 @@ Learning Notes for Jamie
 |       任务        | 完成情况  |
 | :-------------: | :---: |
 |    angularJS    | true  |
-|    浏览器渲染原理剖析    | false |
-|     canvas      | false |
+|    浏览器渲染原理剖析    | true |
+|     canvas      |true |
 |  包含自动化测试的前端工程化  | false |
 | golang 和 docker | false |
 |                 |       |
@@ -16,7 +16,7 @@ Learning Notes for Jamie
 
    完成前端化工程化的 **系统** 学习
 
-   完成 canvas 的 **系统** 学习
+   [x] 完成 canvas 的 **系统** 学习
 
    完成 golang 和 docker 的 **系统** 学习
 
