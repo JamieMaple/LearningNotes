@@ -1,23 +1,15 @@
-const { ifFunc } = require('./utils/utils')
+// some helper
+
+function isFunction(func) {
+  return typeof func === 'function'
+}
+
 /*
- *  promise constructor
+ * Any Promise object is in one of three mutually exclusive states
+ * fulfilled, rejected, and pending
 */
+var PENDING = 'pending'
+var FULFILLED = 'fulfilled'
+var REJECTED = 'rejected'
 
-const PENDING  = 'pending'
-const RESOLVED = 'resolved'
-const REJECTED  = 'rejected'
-
-function TPromise(fn) {
-  if (typeof fn !== 'function') {
-    throw TypeError('Promise resolver ' + fn + ' is not a function')
-  }
-}
-
-TPromise.prototype.then = function() {
-
-}
-
-TPromise.prototype.catch = function() {
-
-}
 

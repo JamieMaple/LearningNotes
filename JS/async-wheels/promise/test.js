@@ -1,39 +1,26 @@
 const assert = require('assert')
 
-function shouldRejected(promise) {
-  return {
-    'catch': function(fn) {
-      return promise.then(function() {
-        throw new Error('Expected promise to be rejected but it was fulfilled')
-      }, function(reason) {
-        fn.call(promise, reason)
+const {
+  isPromise,
+  TPromise,
+} = require('./index')
+
+describe('Promise async', function() {
+  it('Promise should perform async correctly: timeout', function() {
+    const testData = 'seconde inside'
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, 100, 'inside')
+    })
+    .then(data => console.log(data))
+    .then(data => console.log(data))
+    .then(() => {
+      return new Promise((resolve, reject) => {
+        setTimeout(resolve, 100, testData)
       })
-    }
-  }
-}
-
-function shouldFullfilled(promise) {
-  return {
-    'then': function(fn) {
-      return promise.then(function(v) {
-        fn.call(promise, v)
-      }, function(reason) {
-        throw reason
-      })
-    }
-  }
-}
-
-it('should be rejected', function() {
-  var promise = Promise.reject(new Error('wowo'))
-  return shouldRejected(promise).catch(function(err) {
-    assert(err.message === 'wowo', 'Error message should be wowo')
-  })
-})
-
-it('should be resolved', function() {
-  var promise = Promise.resolve(123)
-  return shouldFullfilled(promise).then(function(v) {
-    assert(v === 123, "value should equals 123")
+    }).then((data) => {
+      assert(data === testData)
+    }).catch(() => {
+      throw new Error('out!')
+    })
   })
 })
