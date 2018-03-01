@@ -8,9 +8,8 @@
 
 promise 读规范有感
 
-1. type: plan object
-
-2. three states: pending, fullfilled, rejected
+读完 Promise 的标准觉得实现非常严谨
+感觉类型系统可能更有助于理解 Promise ，所以用 ts 造 Promise 的轮子
 
 ``` javascript
 // constructor
