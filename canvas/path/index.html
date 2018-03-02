@@ -1,0 +1,29 @@
+<canvas></canvas>
+
+<script>
+  function drawDashLine(ctx, x1, y1, x2, y2, dashLength = 5, whiteLength = 10) {
+    ctx.beginPath()
+    ctx.moveTo(x1, y1)
+    ctx.lineTo(x2, y2)
+    ctx.closePath()
+    ctx.setLineDash([dashLength, whiteLength])    
+    ctx.stroke()
+  }
+  function drawCircle(ctx, x, y, r, startA, endA, counterClockWise) {
+    ctx.beginPath()
+    ctx.arc(x, y, r, startA, endA, counterClockWise)
+    ctx.fill()
+  }
+  const mycanvas = document.getElementsByTagName('canvas')[0]
+  const ctx = mycanvas.getContext('2d')
+  mycanvas.height = mycanvas.width = 1000
+  ctx.fillStyle = 'rgba(0,0,0,0.1)'
+  ctx.strokeStyle
+  ctx.lineWidth = 1
+  drawDashLine(ctx, 0, 0, 300, 0)
+  drawDashLine(ctx, 300, 0, 300, 300)
+  drawDashLine(ctx, 300, 300, 80, 300)
+  drawDashLine(ctx, 80, 300, 80, 380)
+  drawDashLine(ctx, 80, 380, 300, 380)
+  drawCircle(ctx, 100, 100, 20, 0, 2 * Math.PI)
+</script>
