@@ -1,171 +1,108 @@
 const http = require('http')
+const url = require('url')
+const Route = require('./route')
+const Layer = require('./layer')
 
-/*
- ** both layer and item(route) objects use this class
- */
-class Layer {
-  constructor(path, fn) {
-    this.handle = fn
-    this.name = fn.name || '<anonymous>'
-    this.path = path
+const proto = {}
+proto.handle = function(req, res, done) {
+  var self = this,
+    method = req.method,
+    idx = 0, stack = self.stack,
+    removed = '', slashAdded = false
 
-    // if Layer class use for route
-    // there have to be `method`
-  }
+    // 获取当前父路径
+    var parentUrl = req.baseUrl || ''
+    // 保存父路径
+    req.baseUrl = parentUrl
+    // 保存原始路径
+    req.originalUrl = req.originalUrl || req.url
 
-  handle_request(req, res, next) {
-    var fn = this.handle
-    try {
-      fn(req, res, next)
-    } catch(err) {
-      next(err)
-    }
-  }
+  function next(err) {
+    const layerError = (err === 'route' ? null : err)
 
-  handle_error(error, req, res, next) {
-    const fn = this.handle
-
-    if (fn.length !== 4) {
-      return next(error)
+    // 如果移除，复原原有路径
+    if (slashAdded) {
+      req.url = ''
+      slashAdded = false
     }
 
-    try {
-      fn(error, req, res, next)
-    } catch(err) {
-      next(err)
+    // 如果有移除，复原原有路径信息
+    if (removed.length !== 0) {
+      req.baseUrl = parentUrl
+      req.url = removed + req.url
+      removed = ''
     }
-  }
 
-  match(path) {
-    if (path === this.path || path === '*') {
-      return true
+    if (layerError === 'router') {
+      return done(null)
     }
-    return false
-  }
-}
-
-class Route {
-  constructor(path) {
-    this.path = path
-    // route items(layers) stack
-    this.stack = []
-
-    this.methods = {}
-  }
-
-  _handles_method(method) {
-    const methodName = method.toLowerCase()
-    return Boolean(this.methods[methodName])
-  }
-
-  dispatch(req, res, done) {
-    var self = this,
-      method = req.method.toLowerCase(),
-      idx = 0, stack = self.stack
     
-    function next(err) {
-      if (err && err === 'route') {
-        return done()
-      }
+    if (idx >= stack.length) {
+      return done(layerError)
+    }
+
+    const path = url.parse(req.url).pathname
+
+    const layer = stack[idx++]
+
+    if (layer.match(path)) {
       
-      if (err && err === 'router') {
-        return done(err)
-      }
+      // handle middlewares
+      if (!layer.route) {
+        // 要移除的部分路径
+        removed = layer.path
+        
+        // 设置当前路径
+        req.url = req.url.substr(removed.length)
+        if (req.url === '') {
+          req.url = '/' + req.url
+          slashAdded = true
+        }
 
-      if (idx >= stack.length) {
-        return done(err)
-      }
+        // 设置当前路径的父路径
+        req.baseUrl = parentUrl + removed
 
-      const layer = stack[idx++]
-      if (method != layer.method) {
-        return next(err)
-      }
-
-      if (err) {
-        layer.handle_error(err, req, res, next)
-      } else {
+        // call handler
+        layer.handle_request(req, res, next)
+      } else if (layer.route._handles_method(method)) {
+        // handle routes
         layer.handle_request(req, res, next)
       }
+    } else {
+      layer.handle_error(layerError, req, res, next)
     }
-    
-    next()
   }
+  
+  next()
 }
 
-// not only `get` but also all methods
-http.METHODS.forEach(method => {
-  method = method.toLowerCase()
-  Route.prototype[method] = function(fn) {
-    const layer = new Layer('/', fn)
-    layer.method = method
+proto.route = function(path) {
+  const route = new Route(path)
+  const layer = new Layer(path, route.dispatch.bind(route))
 
-    this.methods[method] = true
-    this.stack.push(layer)
+  layer.route = route
+  this.stack.push(layer)
 
-    return this
-  }
-})
+  return route
+}
 
-class Router {
-  constructor() {
-    this.stack = []
+proto.use = function(fn) {
+  let path = '/'
+  if (typeof fn !== 'function') {
+    path = fn
+    fn = arguments[1]
   }
 
-  handle(req, res, done) {
-    var self = this,
-      method = req.method,
-      idx = 0, stack = self.stack
-    
-    function next(err) {
-      const layerError = (err === 'route' ? null : err)
+  var layer = new Layer(path, fn)
+  layer.route = undefined
+  this.stack.push(layer)
 
-      if (layerError === 'route') {
-        return done(null)
-      }
-      
-      if (idx >= stack.length || layerError) {
-        return done(layerError)
-      }
-
-      let layer = stack[idx++]
-      if (layer.match(req.url) && layer.route && layer.route._handles_method(method)) {
-        return layer.handle_request(req, res, next)
-      } else {
-        next(layerError)
-      }
-    }
-    
-    next()
-  }
-
-  route(path) {
-    const route = new Route(path)
-    const layer = new Layer(path, route.dispatch.bind(route))
-
-    layer.route = route
-    this.stack.push(layer)
-
-    return route
-  }
-
-  use(fn) {
-    let path = '/'
-    if (typeof fn !== 'function') {
-      path = fn
-      fn = arguments[1]
-    }
-
-    var layer = new Layer(path, fn)
-    layer.route = undefined
-    this.stack.push(layer)
-
-    return this
-  }
+  return this
 }
 
 http.METHODS.forEach(method => {
   method = method.toLowerCase()
-  Router.prototype[method] = function(path, fn) {
+  proto[method] = function(path, fn) {
     const route = this.route(path)
     route[method].call(route, fn)
 
@@ -173,5 +110,14 @@ http.METHODS.forEach(method => {
   }
 })
 
-module.exports = Router
+module.exports = function() {
+  function router(req, res, next) {
+    router.handle(req, res, next)
+  }
+  Object.setPrototypeOf(router, proto)
+   
+  router.stack = []
+
+  return router
+}
 

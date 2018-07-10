@@ -63,3 +63,5 @@ http.METHODS.forEach(method => {
 })
 
 module.exports = Application
+
+exports.Router = Router

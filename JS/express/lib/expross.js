@@ -1,9 +1,10 @@
 const Application = require('./application')
+const Router = require('./router')
 
 function createApplication() {
   const app = new Application()
   return app
 }
 
-module.exports = createApplication
+exports = module.exports = createApplication
 exports.Router = Router

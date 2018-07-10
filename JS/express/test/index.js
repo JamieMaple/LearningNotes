@@ -1,17 +1,24 @@
 const expross = require('../')
 const app = expross()
+const router = expross.Router()
 
-app.put('/', function bar(req, res, next) {
-  res.send('hello wolrd')
+router.use('/1', function(req, res, next) {
+  res.send('first user')
+})
+
+router.use('/2', function(req, res, next) {
+  res.send('second user')
+})
+
+app.use('/users', router)
+
+app.use(function(req, res, next) {
+  console.log('Time: ', Date.now())
   next()
 })
 
-app.get('/', function foo(req, res, next) {
-  next(new Error('Error'))
-})
-
-app.get('/', function(error, req, res, next) {
-  res.send('error')
+app.get('/', function(req, res, next) {
+  res.send('get /')
 })
 
 // console.log(app._router)
