@@ -6,3 +6,4 @@ function createApplication() {
 }
 
 module.exports = createApplication
+exports.Router = Router
