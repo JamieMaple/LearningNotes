@@ -1,9 +1,15 @@
 const http = require('http')
 const Router = require('./router')
+const request = require('./request')
+const response = require('./response')
+const middleware = require('./middleware/init')
 
 class Application {
-  constructor() {
-    this._router = new Router()
+  lazyrouter() {
+    if (!this._router) {
+      this._router = new Router()
+      this._router.use(middleware.init(this))
+    }
   }
 
   listen(port, callback) {
@@ -15,13 +21,6 @@ class Application {
   }
 
   handle(req, res) {
-    if (!res.send) {
-      res.send = function(body) {
-        res.writeHead(200, { 'Content-Type': 'text/plain' })
-        res.end(body)
-      }
-    }
-
     const done = function finalhandler(err) {
       res.writeHead(404, {
         'Content-Type': 'text/plan',
@@ -34,12 +33,19 @@ class Application {
         res.end(msg)
       }
     }
-    
+
+    // 这里无需调用lazyrouter，因为listen前一定调用了.use或者.METHODS方法。
+    // 如果二者都没有调用，没有必要创建路由系统。this._router为undefined
     const router = this._router
-    router.handle(req, res, done)
+    if (router) {
+      router.handle(req, res, done)
+    } else {
+      done()
+    }
   }
 
   use(fn) {
+    this.lazyrouter()
     var path = '/',
       router = this._router
     
@@ -57,6 +63,7 @@ class Application {
 http.METHODS.forEach(method => {
   method = method.toLowerCase()
   Application.prototype[method] = function(path, fn) {
+    this.lazyrouter()
     this._router[method].apply(this._router, arguments)
     return this
   }

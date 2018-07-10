@@ -63,7 +63,11 @@ proto.handle = function(req, res, done) {
         req.baseUrl = parentUrl + removed
 
         // call handler
-        layer.handle_request(req, res, next)
+        if (layerError) {
+          layer.handle_error(layerError, req, res, next)
+        } else {
+          layer.handle_request(req, res, next)
+        }
       } else if (layer.route._handles_method(method)) {
         // handle routes
         layer.handle_request(req, res, next)
