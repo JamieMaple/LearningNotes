@@ -247,3 +247,13 @@
 
 2. 上述配合 VG 等使用比较好
 
+## 技巧31：重复上次的 Ex 命令
+
+1. `@:` 重复上次 Ex 命令
+
+2. `@@` 重复上次 `@:` 重复的命令
+
+3. 对于之前出现过的像 delete、yank、put、copy、move、join、noraml、substitute、pattern 等用 `u` 即可撤销其影响
+
+4. 待后面详细了解 `bnext` 和 `bprevious` 命令
+
