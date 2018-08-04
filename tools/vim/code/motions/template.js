@@ -7,5 +7,6 @@
  * Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 ***/
 var tpl = [
-  '<a href="{url}">{title}</a>'
+  '<a href="#">hello world</a>'
 ]
+
