@@ -1,5 +1,5 @@
 set nocompatible
-filetype plugin ogj
+filetype plugin on
 set number
 
 it's going too slow
