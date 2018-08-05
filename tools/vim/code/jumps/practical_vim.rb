@@ -6,5 +6,5 @@
 # We make no guarantees that this code is fit for any purpose. 
 # Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 #---
-require 'practical_vim/core'
+require 'practical_vim/core.rb'
 require 'practical_vim/more'
