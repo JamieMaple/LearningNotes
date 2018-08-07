@@ -7,4 +7,6 @@
  * Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 ***/
 collection = getCollection();
-process(somethingInTheWay, target);
+process(sdafadsfsafda, target);
+
+I like fish and chips.
