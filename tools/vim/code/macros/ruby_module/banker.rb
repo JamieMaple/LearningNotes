@@ -7,6 +7,8 @@
 # Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 #---
 # ...[end of copyright notice]
-class Banker
-  # implementation...
+module Rank
+  class Banker
+    # implementation...
+  end
 end

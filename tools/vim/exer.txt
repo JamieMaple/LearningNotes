@@ -30,3 +30,12 @@ adfaf
 adfaf
 jjjf a j  sdfsaf sfadf xllllll sfasfdasfslsdfisdf dssdfsdojjsd sfdssf SAFASafadfdaf;
 dsafaf dsafaf adfasf asdfa asdfa 
+
+
+foo = 1;
+foo = 1;
+foobarz = 1;
+foobar = 1;
+foobarzbar = 1;
+
+
