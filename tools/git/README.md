@@ -48,4 +48,8 @@
 
 4. `.gitignore` 可以忽略文件，
 
+5. `git diff` 可以查看已暂存和未暂存的修改，也就是说仅针对 `git add `
+
+6. `git commit` 提交到仓库，`git commit -a` 能够跳过 `add` 步骤
+
 
