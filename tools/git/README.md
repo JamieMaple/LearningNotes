@@ -56,5 +56,51 @@
 
 8. `git mv` 移动或者重命名文件本质上三条命令： `mv` `git rm` `git add`
 
-9. `git log` 用于回顾提交历史，`-p` 显示每次提交内容的差异，`-{n}` 代表最近提交几次，`--stat` 能够看到简略的统计信息
+9. `git log` 用于回顾提交历史，`-p` 显示每次提交内容的差异，`-{n}` 代表最近提交几次，`--stat` 能够看到简略的统计信息，**很有用的一条：`--graph`** 可以看到一个图，大量的参数
+
+10. `git commit --amend` 会尝试重新提交
+
+11. `git add` 会暂存多个内容，如果要取消暂存某些文件，就只需 `git reset HEAD <file>` 来取消暂存
+
+12. `git checkout -- <file>` 撤销之前对某个文件所做的修改
+
+### 远程仓库
+
+1. `git remote` 查看远程仓库服务器
+
+    `-v` 参数可以显示对应的 URL
+    
+    `add <shortname> <url>` 可以用来添加 git 新仓库
+
+2. `git fetch <shortname>` 能够从远端拉取所有还没的数据 
+
+3. `git pull <remote-name> <branch-name>` 能够自动抓取然后合并远程分支到主要分支
+
+4. `git push <remote-name> <branch-name>` 能够将分支内容推送到
+
+5. `git remote <remote-name> <new-name>` 重命名远程仓库
+
+6. `git remote rm <remote-name>` 删除远程仓库
+
+#### `git tag` 标签相关
+
+1. `git tag` 列出已有的标签
+
+##### 创建标签
+
+轻量标签（lightweight）和附注标签（annotated）
+
+1. 附注标签
+
+cmd: `git tag -a {tagName} -m '{message}'`
+
+其中 `-a` 选项是指附注标签（annotated），`-m` 选项是指提交的信息
+
+`git show` 查看标签信息与对应的提交信息
+
+2. 轻量标签
+
+`git tag {tagname}` 无需 `-a` `-s` 以及 `-m` 参数，只需提供标签名字
+
+
 
