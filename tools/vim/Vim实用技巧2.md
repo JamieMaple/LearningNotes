@@ -226,8 +226,31 @@
 
 # global 命令
 
-# global 命令
+## 技巧98：认识 global 命令
 
-1
+`:global`  常采取以下格式：
 
+`:[range] global[!] /{pattern}/ [cmd]`
+
+与大多数 Ex 命令不同，默认情况下的范围是整个文件夹
+
+`{pattern}` 与历史相关联，如果留空，将自动使用当前的查找模式
+
+`[cmd]` 是除了 `:global` 之外能够执行任何 Ex 命令，默认使用 `print`
+
+`vglobal` 与 `global` 命令相反
+
+## 技巧99：删除所有包含模式的文本行
+
+1. 可以使用简写 `g/reg/p`，re 代表 regular expression, p 代表 `:print`，很明显 `grep`
+
+## 技巧100：将 TODO 项收集至寄存器
+
+1. `y[ank] A` 代表将 复制的内容附加到寄存器 a 上
+
+## 技巧101：将 CSS 文件中所有规则的属性按照字母排序
+
+1. `:sort` 能够在选取的文本上进行排序，`:h :sort` 查看更多
+
+2. 广义形式的 `global`：`:g/{start}/ ., {finish} [cmd]`
 
