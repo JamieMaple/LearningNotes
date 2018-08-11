@@ -6,5 +6,5 @@
 # We make no guarantees that this code is fit for any purpose. 
 # Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 #---
-class XhtmlDocument < XmlDocument; end
-class XhtmlTag < XmlTag; end
+class XHTMLDocument < XMLDocument; end
+class XHTMLTag < XMLTag; end
