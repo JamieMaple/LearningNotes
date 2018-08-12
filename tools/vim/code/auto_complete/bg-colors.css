@@ -1,3 +1,7 @@
 .top {
-  background-color: #ef66ef; }
+  background-color: #ef66ef;
+  filter: blur(30px);
+  font-family: serif;
+}
 .bottom {
+  background-color: #ef66ef; }
