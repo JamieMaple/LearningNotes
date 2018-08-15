@@ -21,3 +21,18 @@ Learning Notes for Jamie
    - [ ] grid 布局的系统学习
 
    - [ ] 完成 golang 和 docker 的 **系统** 学习
+
+2. 2018 暑假计划
+
+    - [x] 顺利完成实习（迫于团队产品需要迭代的情况）
+
+    - [  ] 学习 haskell
+
+    - [  ] 完成 swift 的学习以及完成 Youjie 的 iOS 版
+
+    - [  ] 学习使用好 git
+
+    - [  ] 学习使用好 fish 和 zsh
+
+    - [  ] 完成团队项目迭代
+
