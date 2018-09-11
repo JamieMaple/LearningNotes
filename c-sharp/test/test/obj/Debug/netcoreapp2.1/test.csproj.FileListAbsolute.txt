@@ -1,0 +1,10 @@
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/bin/Debug/netcoreapp2.1/test.deps.json
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/bin/Debug/netcoreapp2.1/test.runtimeconfig.json
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/bin/Debug/netcoreapp2.1/test.runtimeconfig.dev.json
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/bin/Debug/netcoreapp2.1/test.dll
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/bin/Debug/netcoreapp2.1/test.pdb
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.csproj.CoreCompileInputs.cache
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.AssemblyInfoInputs.cache
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.AssemblyInfo.cs
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.dll
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.pdb
