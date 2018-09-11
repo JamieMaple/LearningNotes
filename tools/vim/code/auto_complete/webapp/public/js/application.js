@@ -7,3 +7,4 @@
  * Visit http://www.pragmaticprogrammer.com/titles/dnvim for more book information.
 ***/
 // Application code...
+console.log('applications')

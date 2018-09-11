@@ -30,6 +30,8 @@ mac:
 
 **To split panes, We need to be in the tmux**
 
+> `Ctrl - b` default prefix
+
 1. `Ctrl - b "` split screen horizontally
 
 2. `Ctrl - b %` split screen vertically
@@ -39,4 +41,6 @@ mac:
 4. `Ctrl - b :` resizing panes
 
 5. `Ctrl - b :` and then `:resizing-pane -[D|U|L|R] [num]` reszing panel for down or up or left or right number of lines
+
+6. `Ctrl - b s` switch window
 
