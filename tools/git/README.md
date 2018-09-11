@@ -38,9 +38,15 @@
 
 ### 三个状态
 
+> 最初的状态：`Untracked`
+
+1. `add file`
+
+2. `remove file`
+
 `commited（已提交）`、`modified（已修改）` 以及 `staged（已暂存）`
 
-1. 工作目录下无非是两种状态：`tracked（跟踪）` 和 `untracked（未跟踪）`
+1. 工作目录下无非是两种状态：`tracked（跟踪）` 和 `untracked（未跟踪）`, 如果已经跟踪的文件被修改，需要 `stage for commit`
 
 2. 编辑过某些文件后处于 `modified` 状态，放入暂存区然后提交了修改后变回了未修改状态
 
@@ -69,8 +75,14 @@
 1. `git remote` 查看远程仓库服务器
 
     `-v` 参数可以显示对应的 URL
-    
+
     `add <shortname> <url>` 可以用来添加 git 新仓库
+
+    `show` 显示远程仓库的一些信息
+
+    `rm` 删除远程仓库
+
+    `rename` 重命名远程仓库名
 
 2. `git fetch <shortname>` 能够从远端拉取所有还没的数据 
 
@@ -101,6 +113,30 @@ cmd: `git tag -a {tagName} -m '{message}'`
 2. 轻量标签
 
 `git tag {tagname}` 无需 `-a` `-s` 以及 `-m` 参数，只需提供标签名字
+
+#### Git Alias
+
+``` shell
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+
+# 取消暂存文件
+git config --global alias.unstage 'reset HEAD --'
+
+# last log
+git config --global alias.last 'log -1 HEAD'
+
+# 外部命令，使用 `!`
+git config --global alias.vim '!vim'
+```
+
+## Git 分支
+
+
+
+
 
 
 
