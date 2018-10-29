@@ -1,49 +1,25 @@
-﻿// A Hello World! program in c#
-/* hello world */
-using System;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System;
+using System.Threading.Tasks;
 
-// can contain zro
-namespace HelloWorld
-{
-    class PropertyClass {
-        private string codeMessage;
-        public string code {
-            get {
-                return codeMessage;
-            }
-            set {
-                codeMessage = value;
-            }
+
+namespace Program {
+    class Test {
+        public static void Main(string[] args) {
+            runAsyncTask();
+            runSyncTask();
         }
-    }
-
-    struct YourStruct {
-
-    }
-
-    interface IYourInterface {
-
-    }
-
-    class Hello
-    {
-        // optional int
-        // optional args(String[])
-        [Conditional("DEBUG")]
-        public void foo() {}
-
-        static void Main()
-        {
-            Type type = typeof(Hello);
-            foreach (MethodInfo m in type.GetMethods()) {
-                foreach (Attribute attribute in m.GetCustomAttributes(false)) {
-                    ConditionalAttribute cattribute = (ConditionalAttribute)attribute;
-                    if (cattribute != null) {
-                        Console.WriteLine(cattribute);
+        
+        public static async void runAsyncTask() {
+            await Task.Run(() => { 
+                    for (int i = 0; i < 100; i++) {
+                        Console.WriteLine("run in async task:", i);
                     }
-                }
+            });
+        }
+
+        public static void runSyncTask() {
+            for (int i = 0; i < 25; i++) {
+                Console.WriteLine("run in sync task: ", i);
             }
         }
     }

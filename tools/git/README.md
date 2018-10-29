@@ -136,9 +136,11 @@ git config --global alias.vim '!vim'
 
 Git 分支本质上仅仅是指向提交对象的可变指针，默认分支为 `master`
 
-Git 有一个特殊名为 `HEAD` 的指针
+Git 有一个特殊名为 `HEAD` 的指针，指向当前所在的本地分支（可以想象成当前分支的别名）
 
 进行提交操作时，Git 会保存一个提交对象（commit object），该对象会包含一个纸箱暂存内容快照的指针
+
+如果视图合并两个分支时，能够顺着其中一个走下去到达另一个分支，就只会简单的 `fast-forward`
 
 `git commit` 提交时：
 
@@ -160,9 +162,89 @@ Git 有一个特殊名为 `HEAD` 的指针
 
 1. `git branch {branch-name}` 创建一个新分支，实际上只是创建一个可移动的新指针
 
-2. `git log --decorate`
+    `-d` 参数如果没有合并会删除失败
 
+    `-D` 参数能够强制删除某个分支
 
+    `-vv` 查看本地分支更多信息，比如正在跟踪哪些分支
 
+2. `git log --decorate` 可以查看各个分支当前所指的对象，可以配合 `--oneline` 使用，`--all` 可以看到所有分支
 
+3. `git merge` 用于合并分支
+
+4. `git remote show origin`
+
+5. `git push (remote) (branch)`
+
+    `push` 可以推送到别的分支，原理上是推送到 `refs/heds` 里某部分
+
+    `git push (remote) --delete (branch)` 可以用于删除一个远程分支，该命令需要小心行事
+
+6. `git fetch` 抓取本地没有的内容
+
+7. `git pull` 相当于 `fetch` + `merge`，由于类似黑模仿，所以单独显式使用 `fetch` 和 `merge` 更好
+
+### 分支新建与合并
+
+> 针对紧急任务
+
+1. 切换到线上分支
+
+2. 然后新建一个分支，然后修复它
+
+3.  在测试通后，切换回向上分支然后合并修补分支，推送到线上分支
+
+4. 切换原分支继续工作
+
+### 解决合并冲突
+
+``` html
+<<<<<<< HEAD:index.html
+<div id="footer">contact : email.support@github.com</div>
+=======
+<div id="footer">
+ please contact us at support@github.com
+</div>
+>>>>>>> iss53:index.html
+```
+
+其中 `HEAD` 指示的是当前所在的分支，下面是 `merge` 分支
+
+`git mergetool` 一种可视化合并工具
+
+1. (default) opendiff
+2. vimdiff
+3. meld
+
+### 分支管理
+
+1. `git branch --merged` 可以查看那些分支已经合并
+
+2. `git branch --no-merged` 可以查看那些尚未合并的分支
+
+### 分支开发工作流
+
+`work silos` 可以维护多个分支，`master` 上只保留相对稳定的代码
+
+短期分支可以用来实现某种单一特性等
+
+#### 变基
+
+整合不同分支的修改主要有：`merge` 以及 `rebase`
+
+`git rebase master` 可以变当前基为 `master` 的基然后可以再合并，最后合并完就可以 `git rm` 了
+
+> 不要对你仓库之外有副本执行编基
+
+变基村子风险：
+
+不要对在你的仓库外有副本的分支执行变基
+
+`git pull --rebase` 不直接 `git pull`，或手动完成
+
+## 服务器上的 git
+
+一个远程仓库通常只是一个裸仓库，没有当前工作目录的仓库
+
+支持四种传输协议：本地协议(local)，http，ssh 以及 git
 

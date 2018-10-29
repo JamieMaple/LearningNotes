@@ -8,3 +8,4 @@
 /Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.AssemblyInfo.cs
 /Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.dll
 /Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.pdb
+/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/Debug/netcoreapp2.1/test.csprojAssemblyReference.cache

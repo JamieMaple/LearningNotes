@@ -691,13 +691,13 @@
       "projectName": "test",
       "projectPath": "/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/test.csproj",
       "packagesPath": "/Users/maple/.nuget/packages/",
-      "outputPath": "/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj",
+      "outputPath": "/Users/maple/Desktop/Learning/LearningNotes/c-sharp/test/test/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/maple/.config/NuGet/NuGet.Config"
+        "/Users/maple/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.1"
@@ -720,9 +720,8 @@
       "netcoreapp2.1": {
         "dependencies": {
           "Microsoft.NETCore.App": {
-            "suppressParent": "All",
             "target": "Package",
-            "version": "2.1",
+            "version": "[2.1.0, )",
             "autoReferenced": true
           }
         },
