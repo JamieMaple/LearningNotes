@@ -70,7 +70,9 @@
 
    `USER` 指定当前用户
 
-   `HEALTHCHECK` 健康检查
+   `HEALTHCHECK <options> <cmd>` 健康检查
+
+   `ONBUILD` 
 
 ### service
 
