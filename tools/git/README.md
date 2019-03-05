@@ -248,3 +248,21 @@ Git 有一个特殊名为 `HEAD` 的指针，指向当前所在的本地分支�
 
 支持四种传输协议：本地协议(local)，http，ssh 以及 git
 
+### `reset`
+
+three trees(collection files):
+
+| Tree              | Role                               |
+|-------------------|------------------------------------|
+| head              | last comment snapshot, next parent |
+| index             | proposed next commit snapshot      |
+| working directory | sandbox                            |
+
+PS: `working directory` 应该就指的是我们文件夹能直观看到的，`index` 指的是 `add` 后的暂存区，`head` 指的应该是 `repository` 内的
+
+1. Move the branch HEAD points to (stop here if `--soft`)
+
+1. Make the Index look like HEAD (stop here unless `--hard`)
+
+1. Make the Working Directory look like the index
+

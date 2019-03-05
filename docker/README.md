@@ -38,11 +38,17 @@
 
 1. `docker diff`
 
+> 查看端口配置情况
+
+1. `docker port <container>`
+
 > 构建镜像
 
 1. `docker build -t <tag> <path|URL>`
 
    如果使用 `.` 则代表的是使用相对上下文目录下的
+
+> 容器互联
 
 ### containers
 
@@ -95,6 +101,43 @@
 1. `docker commit <options> <image>` 改变容器存储区之后保存下来成为新的镜像，不应该用此来定制
 
 1. `docker history <image>` 查看镜像内历史记录
+
+### compose
+
+> Compose is a tool for defining and running multi-container Docker applications.
+> With Compose, you use a YAML file to configure your application's services.
+
+1. `docker-compose.yml`
+
+   `yaml` 格式
+
+   `.env` 环境变量设置文件
+
+1. `build`
+
+1. `config`
+
+1. `down`
+
+1. `exec`
+
+1. `help`
+
+1. `images`
+
+1. `kill`
+
+1. `logs`
+
+1. `port`
+
+1. `ps`
+
+1. `pull`
+
+1. `scale`
+
+1. `up`
 
 ### swarms
 
