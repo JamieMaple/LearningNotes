@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "module": "es2015",
+        "noImplicitAny": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "types": [],
+        "target": "es6"
+    },
+    "include": [
+        "src/**/*"
+    ]
+}

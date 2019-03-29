@@ -1,0 +1,8 @@
+{
+  "name": "whuel",
+  "version": "1.0.0",
+  "description": "vue wheels",
+  "main": "index.js",
+  "author": "Maple",
+  "license": "MIT"
+}
