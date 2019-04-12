@@ -1,12 +1,12 @@
 #include <iostream>
 
 int main() {
-    int i, &ri = i;
+    int i = 42;
+    auto *p = &i;
 
-    i = 5;
-    ri = 10;
+    decltype(0.0) j = 1;
 
-    std::cout << i << " " << ri << std::endl;
+    j = 1.1;
 
     return 0;
 }
