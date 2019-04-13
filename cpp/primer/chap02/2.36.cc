@@ -1,11 +1,5 @@
 #include <iostream>
 
-using Sales_data = struct {
-    std::string bookNo;
-    unsigned int units_sold = 0;
-    double revenue = 0.0;
-};
-
 int main() {
     int a = {3}, b{4};
 
