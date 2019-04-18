@@ -46,8 +46,8 @@ std::ostream &print(std::ostream &os, const Sales_data &item) {
     return os;
 }
 
-double Sales_data::avg_price() const {
-    return this->revenue / this->units_sold;
+inline double Sales_data::avg_price() const {
+    return revenue / units_sold;
 }
 
 std::istream &read(std::istream &is, Sales_data &item) {
