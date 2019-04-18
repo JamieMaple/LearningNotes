@@ -11,7 +11,7 @@ class Person {
             std::cout << "default constructor" << std::endl;
         };
         Person(std::istream &is) {
-            std::cout << "istream constructo" << std::endl;
+            std::cout << "istream constructor" << std::endl;
             is >> name >> address >> age;
         }
 
