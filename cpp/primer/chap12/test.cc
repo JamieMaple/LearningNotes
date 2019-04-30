@@ -2,7 +2,7 @@
 #include <string>
 
 int main() {
-    std::shared_ptr<std::string> p;
+    std::unique_ptr<int> p(new int());
 
     return 0;
 }
