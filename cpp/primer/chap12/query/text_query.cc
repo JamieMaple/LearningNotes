@@ -22,11 +22,12 @@ TextQuery::TextQuery(std::ifstream &in): content(new text_group_type) {
     }
 }
 
-QueryResult TextQuery::query(const string &word) {
-    if (word_map.find(word) == word_map.end()) {
+QueryResult TextQuery::query(const string &word) const {
+    auto it = word_map.find(word);
+    if (it == word_map.end()) {
         return QueryResult(word, std::make_shared<line_num_group_type>(), content);
     }
-    return QueryResult(word, word_map[word], content);
+    return QueryResult(word, it->second, content);
 }
 
 std::ostream &print(std::ostream &output, QueryResult result) {

@@ -36,7 +36,7 @@ std::ostream &print(std::ostream&, QueryResult);
 class TextQuery {
     public:
         explicit TextQuery(std::ifstream &in);
-        QueryResult query(const string&);
+        QueryResult query(const string&) const;
     private:
         std::shared_ptr<text_group_type> content;
         std::map<string, std::shared_ptr<line_num_group_type>> word_map;
