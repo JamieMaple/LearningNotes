@@ -1,8 +1,11 @@
-#include <memory>
-#include <string>
+#include <iostream>
+#include <map>
+#include <set>
 
 int main() {
-    std::unique_ptr<int> p(new int());
+    std::map<int, std::set<int>> m;
+
+    std::cout << m[1].size() << std::endl;
 
     return 0;
 }
