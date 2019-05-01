@@ -9,6 +9,7 @@
 #define TEXT_QUERY_H
 
 using std::string;
+using std::shared_ptr;
 using text_group_type = std::vector<string>;
 using line_num_type = text_group_type::size_type;
 using line_num_group_type = std::set<line_num_type>;
@@ -17,8 +18,8 @@ class QueryResult {
     public:
         explicit QueryResult(
                 const string &s,
-                std::shared_ptr<line_num_group_type> nums,
-                std::shared_ptr<text_group_type> content):
+                shared_ptr<line_num_group_type> nums,
+                shared_ptr<text_group_type> content):
             word(s), line_nums(nums), lines(content) {  }
         line_num_group_type::iterator begin() const { return line_nums->begin(); }
         line_num_group_type::iterator end() const { return line_nums->end(); }
@@ -27,8 +28,8 @@ class QueryResult {
         const string &get_word() const { return word; }
     private:
         const string word;
-        std::shared_ptr<line_num_group_type> line_nums;
-        std::shared_ptr<text_group_type> lines;
+        shared_ptr<line_num_group_type> line_nums;
+        shared_ptr<text_group_type> lines;
 };
 
 std::ostream &print(std::ostream&, QueryResult);
@@ -38,8 +39,8 @@ class TextQuery {
         explicit TextQuery(std::ifstream &in);
         QueryResult query(const string&) const;
     private:
-        std::shared_ptr<text_group_type> content;
-        std::map<string, std::shared_ptr<line_num_group_type>> word_map;
+        shared_ptr<text_group_type> content;
+        std::map<string, shared_ptr<line_num_group_type>> word_map;
 };
 
 void runQuery(std::ifstream&);
