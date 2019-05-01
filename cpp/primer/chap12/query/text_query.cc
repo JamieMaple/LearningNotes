@@ -6,7 +6,7 @@
 
 using std::string;
 
-TextQuery::TextQuery(std::ifstream &in): content(new text_group_type) {
+TextQuery::TextQuery(std::ifstream& in): content(new text_group_type) {
     string line, word;
 
     while (std::getline(in, line)) {
@@ -22,7 +22,7 @@ TextQuery::TextQuery(std::ifstream &in): content(new text_group_type) {
     }
 }
 
-QueryResult TextQuery::query(const string &word) const {
+QueryResult TextQuery::query(const string& word) const {
     auto it = word_map.find(word);
     if (it == word_map.end()) {
         static auto no_data = std::make_shared<line_num_group_type>();
@@ -31,7 +31,7 @@ QueryResult TextQuery::query(const string &word) const {
     return QueryResult(word, it->second, content);
 }
 
-std::ostream &print(std::ostream &output, const QueryResult &result) {
+std::ostream& print(std::ostream& output, const QueryResult& result) {
     output << result.get_word() << " occurs " << result.size() << " ";
 
     if (result.size() > 1) {
@@ -40,14 +40,19 @@ std::ostream &print(std::ostream &output, const QueryResult &result) {
         output << "time\n";
     }
 
+    //for (auto it = result.begin(); it != result.end(); ++it) {
+        //output << "(line " << *it+1 << ") "<< result.str_at(*it) << std::endl;
+    //}
+
     for (auto it = result.begin(); it != result.end(); ++it) {
-        output << "(line " << *it+1 << ") "<< result.str_at(*it) << std::endl;
+        ConstStrBlobPtr p(*result.get_file(), *it);
+        output << "(line " << *it + 1 << ") "<< p.deref() << std::endl;
     }
 
     return output;
 }
 
-void runQuery(std::ifstream &infile) {
+void runQuery(std::ifstream& infile) {
     TextQuery tq(infile);
 
     while (true) {
