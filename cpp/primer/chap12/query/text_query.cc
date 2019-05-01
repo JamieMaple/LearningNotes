@@ -25,13 +25,20 @@ TextQuery::TextQuery(std::ifstream &in): content(new text_group_type) {
 QueryResult TextQuery::query(const string &word) const {
     auto it = word_map.find(word);
     if (it == word_map.end()) {
-        return QueryResult(word, std::make_shared<line_num_group_type>(), content);
+        static auto no_data = std::make_shared<line_num_group_type>();
+        return QueryResult(word, no_data, content);
     }
     return QueryResult(word, it->second, content);
 }
 
-std::ostream &print(std::ostream &output, QueryResult result) {
-    output << result.get_word() << " occurs " << result.size() << " times\n";
+std::ostream &print(std::ostream &output, const QueryResult &result) {
+    output << result.get_word() << " occurs " << result.size() << " ";
+
+    if (result.size() > 1) {
+        output << "times\n";
+    } else {
+        output << "time\n";
+    }
 
     for (auto it = result.begin(); it != result.end(); ++it) {
         output << "(line " << *it+1 << ") "<< result.str_at(*it) << std::endl;

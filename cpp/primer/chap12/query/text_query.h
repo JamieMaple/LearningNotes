@@ -32,7 +32,7 @@ class QueryResult {
         shared_ptr<text_group_type> lines;
 };
 
-std::ostream &print(std::ostream&, QueryResult);
+std::ostream &print(std::ostream&, const QueryResult&);
 
 class TextQuery {
     public:
