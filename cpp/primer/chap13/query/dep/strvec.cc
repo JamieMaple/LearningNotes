@@ -10,6 +10,9 @@ void  StrVec::free() {
         std::for_each(elements, first_free, [this](std::string& p) {
             (*this).alloc.destroy(&p);
         });
+        //for (auto p = first_free; p != elements;) {
+            //alloc.destroy(--p);
+        //}
         alloc.deallocate(elements, capacity());
     }
 }
@@ -36,24 +39,6 @@ StrVec::StrVec(const StrVec& v) {
     first_free = cap = group.second;
 }
 
-StrVec::StrVec(StrVec &&v) noexcept
-: elements(v.elements), first_free(v.first_free), cap(v.cap) {
-    v.elements = v.first_free = v.cap = nullptr;
-}
-
-StrVec& StrVec::operator=(StrVec&& rhs) noexcept {
-    if (this != &rhs) {
-        free();
-        elements = rhs.elements;
-        first_free = rhs.first_free;
-        cap = rhs.cap;
-
-        rhs.elements = rhs.first_free = rhs.cap = nullptr;
-    }
-
-    return *this;
-}
-
 StrVec::StrVec(std::initializer_list<std::string> list) {
     auto data = alloc_n_copy(list.begin(), list.end());
     
@@ -78,11 +63,6 @@ StrVec::~StrVec() {
 void StrVec::push_back(const std::string& s) {
     chk_n_alloc();
     alloc.construct(first_free++, s);
-}
-
-void StrVec::push_back(std::string&& s) {
-    chk_n_alloc();
-    alloc.construct(first_free++, std::move(s));
 }
 
 void StrVec::reserve(size_t n) {
@@ -113,6 +93,7 @@ void StrVec::resize(size_t n, std::string s) {
             alloc.destroy(--first_free);
         }
     } else {
+        // 空间不够扩大二倍
         if (n > capacity()) {
             reserve(2 * n);
         }

@@ -9,11 +9,8 @@ class StrVec {
         StrVec(const StrVec&);
         StrVec(std::initializer_list<std::string>);
         StrVec& operator=(const StrVec&);
-        StrVec(StrVec &&) noexcept;
-        StrVec& operator=(StrVec &&rhs) noexcept;
         ~StrVec();
         void push_back(const std::string&);
-        void push_back(std::string&&);
         size_t size() const { return first_free - elements; }
         size_t capacity() const { return cap - elements; }
         std::string *begin() const { return elements; }

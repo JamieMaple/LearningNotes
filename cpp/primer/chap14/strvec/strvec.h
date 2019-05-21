@@ -4,10 +4,14 @@
 #include <string>
 
 class StrVec {
+    friend bool operator==(const StrVec&, const StrVec&);
+    friend bool operator!=(const StrVec&, const StrVec&);
+    friend bool operator<(const StrVec&, const StrVec&);
     public:
         StrVec(): elements(nullptr), first_free(nullptr), cap(nullptr) {  };
         StrVec(const StrVec&);
         StrVec(std::initializer_list<std::string>);
+        StrVec& operator=(std::initializer_list<std::string>);
         StrVec& operator=(const StrVec&);
         StrVec(StrVec &&) noexcept;
         StrVec& operator=(StrVec &&rhs) noexcept;
@@ -31,6 +35,9 @@ class StrVec {
         std::string *first_free;
         std::string *cap;
 };
+
+bool operator==(const StrVec&, const StrVec&);
+bool operator!=(const StrVec&, const StrVec&);
 
 #endif
 

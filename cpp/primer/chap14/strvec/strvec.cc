@@ -1,4 +1,5 @@
 #include "strvec.h"
+#include <iostream>
 
 std::pair<std::string*, std::string*> StrVec::alloc_n_copy(const std::string *begin, const std::string *end) {
     auto elem = alloc.allocate(end - begin);
@@ -41,6 +42,7 @@ StrVec::StrVec(StrVec &&v) noexcept
     v.elements = v.first_free = v.cap = nullptr;
 }
 
+
 StrVec& StrVec::operator=(StrVec&& rhs) noexcept {
     if (this != &rhs) {
         free();
@@ -67,6 +69,16 @@ StrVec& StrVec::operator=(const StrVec& v) {
     free();
     elements = group.first;
     first_free = cap = group.second;
+
+    return *this;
+}
+
+StrVec& StrVec::operator=(std::initializer_list<std::string> li) {
+    auto data = alloc_n_copy(li.begin(), li.end());
+    free();
+
+    elements = data.first;
+    first_free = cap = data.second;
 
     return *this;
 }
@@ -120,5 +132,36 @@ void StrVec::resize(size_t n, std::string s) {
             alloc.construct(first_free++, s);
         }
     }
+}
+
+bool operator<(const StrVec& lhs, const StrVec& rhs) {
+    for (size_t i = 0; i < lhs.size() && i < rhs.size(); ++i) {
+        auto lval = *(lhs.begin() + i);
+        auto rval = *(rhs.begin() + i);
+
+        if (lval == rval) {
+            continue;
+        } else if (lval < rval) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    return lhs.size() < rhs.size();
+}
+
+bool operator!=(const StrVec &lhs, const StrVec &rhs) {
+    return !(lhs == rhs);
+}
+
+bool operator==(const StrVec &lhs, const StrVec &rhs) {
+    for (size_t i = 0; i < lhs.size() && i < rhs.size(); ++i) {
+        if (*(lhs.begin() + i) != *(rhs.begin() + i)) {
+            return false;
+        }
+    }
+
+    return lhs.size() == rhs.size();
 }
 
