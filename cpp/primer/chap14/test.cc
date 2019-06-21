@@ -1,10 +1,19 @@
 #include <iostream>
 
-int main() {
-    const char* s = "Hello World";
+class SmallInt {
+public:
+    SmallInt(int value = 0): val(value) {  }
+    operator int() const { return val; }
+private:
+    int val;
+};
 
-    std::cout << s[2] << std::endl;
+int main() {
+    SmallInt c(1);
+
+    int a = c + 1;
+
+    std::cout << a << std::endl;
 
     return 0;
 }
-
