@@ -27,4 +27,6 @@ function *logic() {
 }
 
 runGen(logic)
+for (let i = 0; i < 3; i++) {
 
+}

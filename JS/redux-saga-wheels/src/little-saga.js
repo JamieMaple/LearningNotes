@@ -57,6 +57,13 @@ function take(pattern = '*') {
   }
 }
 
+function fork(fn, ...args) {
+  return {
+    IO: true,
+    payload: { fn, args }
+  }
+}
+
 function matcher(pattern) {
   return input => input.type === pattern
 }
@@ -65,22 +72,20 @@ function runTakeEffect(env,  { channel = env.channel, pattern }, cb) {
   channel.take(cb, pattern != undefined ? matcher(input) : null)
 }
 
+function runForkEffect(env, payload, next) {
+  // TODO : run payload fn
+  // newChildTask -> next -> main task run
+}
+
 const effectRunnerMap = {
   'TAKE': runTakeEffect,
 }
 
 function proc({ channel, iterator, dispatch }) {
   // main task
-  const mainTask = { cancel: cancelMain, status: 'RUNNING' }
+
   // main task descriptor
   const task = null
-
-  // function cancelMain() {
-  //   if (mainTask.status === 'RUNNING') {
-  //     mainTask.status = 'CANCELLED'
-  //     next('TASK_CANCEL')
-  //   }
-  // }
 
   next()
 
@@ -110,6 +115,7 @@ function proc({ channel, iterator, dispatch }) {
 }
 
 function runSaga({ channel, dispatch, getState }, saga, ...args) {
+  // get the iterator
   const it = saga(...args)
   // effectsMiddlewares
   let finalizeRunEffect
