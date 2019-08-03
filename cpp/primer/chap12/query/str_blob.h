@@ -1,10 +1,10 @@
 #ifndef STR_BLOB_H
 #define STR_BLOB_H
 
+#include <memory>
 #include <vector>
 #include <string>
 #include <initializer_list>
-#include <memory>
 #include <exception>
 
 using std::vector;
