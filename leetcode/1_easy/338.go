@@ -1,4 +1,4 @@
-package main
+package easy
 
 func countBitsSingle(n int) int {
 	r := 0

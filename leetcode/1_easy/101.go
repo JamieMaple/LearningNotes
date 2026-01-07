@@ -1,4 +1,4 @@
-package main
+package easy
 
 func diffTree(root1 *TreeNode, root2 *TreeNode) bool {
 	if root1 == nil || root2 == nil {

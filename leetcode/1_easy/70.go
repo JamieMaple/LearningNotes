@@ -1,4 +1,4 @@
-package main
+package easy
 
 // 1. 自己想的动态规划
 func climbStairsTempl(n int, m map[int]int) int {
